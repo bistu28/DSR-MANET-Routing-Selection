@@ -1,0 +1,34 @@
+{
+  "manifest_scenario_count": 180,
+  "scenarios_completed_this_run": 8,
+  "node_time_observations_this_run": 480800,
+  "observation_interval_s": 1.0,
+  "radio_range_m": 250.0,
+  "connectivity_source": "scenario_mobility_radio_range_geometry",
+  "neighbor_encoding": "neighbor_ids_hex, with bit i representing neighbor node i",
+  "source_trace_by_scenario": {
+    "DSR_N100_MLOW_TLOW_S10001_R001": "ns3/results/mobility_traces/DSR_N100_MLOW_TLOW_S10001_R001.csv.gz",
+    "DSR_N100_MLOW_TLOW_S10002_R002": "ns3/results/mobility_traces/DSR_N100_MLOW_TLOW_S10002_R002.csv.gz",
+    "DSR_N100_MLOW_TLOW_S10003_R003": "ns3/results/mobility_traces/DSR_N100_MLOW_TLOW_S10003_R003.csv.gz",
+    "DSR_N100_MLOW_TLOW_S10004_R004": "ns3/results/mobility_traces/DSR_N100_MLOW_TLOW_S10004_R004.csv.gz",
+    "DSR_N100_MLOW_TLOW_S10005_R005": "ns3/results/mobility_traces/DSR_N100_MLOW_TLOW_S10005_R005.csv.gz",
+    "DSR_N100_MLOW_THIGH_S10001_R006": "ns3/results/mobility_traces/DSR_N100_MLOW_THIGH_S10001_R006.csv.gz",
+    "DSR_N100_MLOW_THIGH_S10002_R007": "ns3/results/mobility_traces/DSR_N100_MLOW_THIGH_S10002_R007.csv.gz",
+    "DSR_N100_MLOW_THIGH_S10003_R008": "ns3/results/mobility_traces/DSR_N100_MLOW_THIGH_S10003_R008.csv.gz",
+    "DSR_N100_MLOW_THIGH_S10004_R009": "ns3/results/mobility_traces/DSR_N100_MLOW_THIGH_S10004_R009.csv.gz",
+    "DSR_N100_MLOW_THIGH_S10005_R010": "ns3/results/mobility_traces/DSR_N100_MLOW_THIGH_S10005_R010.csv.gz"
+  },
+  "input_mobility_csv": "data/validation/step_batches/Mobility_data.csv",
+  "output_csv": "/Users/bistupaul/Movies/DISSERTATION/data/validation/step_batches/Topology_data.csv",
+  "processed_scenario_ids": [
+    "DSR_N100_MLOW_TLOW_S10003_R003",
+    "DSR_N100_MLOW_TLOW_S10004_R004",
+    "DSR_N100_MLOW_TLOW_S10005_R005",
+    "DSR_N100_MLOW_THIGH_S10001_R006",
+    "DSR_N100_MLOW_THIGH_S10002_R007",
+    "DSR_N100_MLOW_THIGH_S10003_R008",
+    "DSR_N100_MLOW_THIGH_S10004_R009",
+    "DSR_N100_MLOW_THIGH_S10005_R010"
+  ],
+  "status": "PASS"
+}

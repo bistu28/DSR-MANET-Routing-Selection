@@ -1,0 +1,143 @@
+{
+  "input": "data/raw/smoke_route_failure.csv",
+  "rows_input": 500,
+  "columns_input": [
+    "node_speed",
+    "link_quality",
+    "rssi_dbm",
+    "snr_db",
+    "end_to_end_delay_ms",
+    "packet_loss",
+    "pdr",
+    "throughput_bps",
+    "queue_length",
+    "remaining_energy",
+    "hop_count",
+    "route_stability",
+    "route_failure_events_before",
+    "route_failure"
+  ],
+  "renamed_columns": {
+    "node_speed": "node_speed",
+    "link_quality": "link_quality",
+    "rssi_dbm": "rssi_dbm",
+    "snr_db": "snr_db",
+    "end_to_end_delay_ms": "end_to_end_delay_ms",
+    "packet_loss": "packet_loss",
+    "pdr": "pdr",
+    "throughput_bps": "throughput_bps",
+    "queue_length": "queue_length",
+    "remaining_energy": "remaining_energy",
+    "hop_count": "hop_count",
+    "route_stability": "route_stability",
+    "route_failure_events_before": "route_failure_events_before",
+    "route_failure": "route_failure"
+  },
+  "duplicates_removed": 0,
+  "invalid_values": {},
+  "missing_before": {
+    "node_speed": 0,
+    "link_quality": 0,
+    "rssi_dbm": 0,
+    "snr_db": 0,
+    "end_to_end_delay_ms": 0,
+    "packet_loss": 0,
+    "pdr": 0,
+    "throughput_bps": 0,
+    "queue_length": 0,
+    "remaining_energy": 0,
+    "hop_count": 0,
+    "route_stability": 0,
+    "route_failure_events_before": 0,
+    "route_failure": 0
+  },
+  "outliers": {
+    "node_speed": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "link_quality": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "rssi_dbm": {
+      "iqr_count_reported_not_removed": 2
+    },
+    "snr_db": {
+      "iqr_count_reported_not_removed": 1
+    },
+    "end_to_end_delay_ms": {
+      "iqr_count_reported_not_removed": 23
+    },
+    "packet_loss": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "pdr": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "throughput_bps": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "queue_length": {
+      "iqr_count_reported_not_removed": 15
+    },
+    "remaining_energy": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "hop_count": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "route_stability": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "route_failure_events_before": {
+      "iqr_count_reported_not_removed": 46
+    }
+  },
+  "leakage_columns_removed": [],
+  "removal_reasons": [],
+  "missing_after": {
+    "node_speed": 0,
+    "link_quality": 0,
+    "rssi_dbm": 0,
+    "snr_db": 0,
+    "end_to_end_delay_ms": 0,
+    "packet_loss": 0,
+    "pdr": 0,
+    "throughput_bps": 0,
+    "queue_length": 0,
+    "remaining_energy": 0,
+    "hop_count": 0,
+    "route_stability": 0,
+    "route_failure_events_before": 0,
+    "route_failure": 0
+  },
+  "rows_output": 500,
+  "class_distribution": {
+    "0": 183,
+    "1": 317
+  },
+  "feature_columns": [
+    "node_speed",
+    "link_quality",
+    "rssi_dbm",
+    "snr_db",
+    "end_to_end_delay_ms",
+    "packet_loss",
+    "pdr",
+    "throughput_bps",
+    "queue_length",
+    "remaining_energy",
+    "hop_count",
+    "route_stability",
+    "route_failure_events_before"
+  ],
+  "selected_baseline": "xgboost_baseline",
+  "validation_f1": {
+    "random_forest": 0.8615384615384616,
+    "xgboost_baseline": 0.8805970149253731
+  },
+  "test_evaluation_models": [
+    "random_forest",
+    "xgboost_baseline",
+    "best_model_tuned"
+  ]
+}

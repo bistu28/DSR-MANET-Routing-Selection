@@ -1,0 +1,4 @@
+dataset,rows,unique_scenarios,expected_scenarios,coverage_fraction,mode
+metadata,180,180,180,1.0,manifest
+topology,112140,1,180,0.005555555555555556,candidate topology
+mobility,300500,5,180,0.027777777777777776,mobility trace

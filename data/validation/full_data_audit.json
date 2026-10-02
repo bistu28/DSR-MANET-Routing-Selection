@@ -1,0 +1,123 @@
+{
+  "audit_scope": "complete dataset pipeline audit",
+  "status_by_stage": {
+    "1": {
+      "name": "Simulation Metadata",
+      "status": "\ud83d\udfe2 COMPLETE",
+      "evidence": [
+        "data/metadata/Simulation_data.csv exists with 180 scenarios"
+      ],
+      "issues": []
+    },
+    "2": {
+      "name": "MANET/Topology",
+      "status": "\ud83d\udfe1 PARTIAL",
+      "evidence": [
+        "data/topology/Topology_data.csv exists",
+        "rows=112140",
+        "unique scenario ids=1"
+      ],
+      "issues": [
+        "Topology exists but covers only one scenario; not the full 180-scenario manifest."
+      ]
+    },
+    "3": {
+      "name": "Mobility",
+      "status": "\ud83d\udfe1 PARTIAL",
+      "evidence": [
+        "data/mobility/Mobility_data.csv exists",
+        "rows=300500",
+        "unique scenario ids=5"
+      ],
+      "issues": [
+        "Mobility dataset covers only five scenarios and does not span the full manifest matrix."
+      ]
+    },
+    "4": {
+      "name": "Link Quality",
+      "status": "\ud83d\udfe1 PARTIAL",
+      "evidence": [
+        "data/metadata/Link_Quality.csv exists",
+        "raw RSSI/SNR/PRR/ETX values were found in raw packet-loss files"
+      ],
+      "issues": [
+        "Not all stage-specific values are aligned to the 180-scenario manifest."
+      ]
+    },
+    "5": {
+      "name": "Network Performance",
+      "status": "\ud83d\udfe1 PARTIAL",
+      "evidence": [
+        "data/metadata/Network_Performance.csv exists"
+      ],
+      "issues": [
+        "Performance metrics exist, but not clearly tied to the full DSR scenario matrix."
+      ]
+    },
+    "6": {
+      "name": "Congestion/MAC",
+      "status": "\ud83d\udfe1 PARTIAL",
+      "evidence": [
+        "data/metadata/Congestion.csv exists"
+      ],
+      "issues": [
+        "Packet-level congestion indicators exist, but they are not full scenario-aligned DSR stack data."
+      ]
+    },
+    "7": {
+      "name": "DSR Routing",
+      "status": "\ud83d\udd34 MISSING",
+      "evidence": [
+        "Only generic routing labels are present"
+      ],
+      "issues": [
+        "No DSR-specific route state (route_id, RREQ/RREP/RERR, route_path, route repair events) was found."
+      ]
+    },
+    "8": {
+      "name": "Failure/Recovery",
+      "status": "\ud83d\udfe1 PARTIAL",
+      "evidence": [
+        "data/metadata/Failure_Recovery.csv exists",
+        "link_failure and loss_occurred are present"
+      ],
+      "issues": [
+        "No explicit recovery/repair metadata was found."
+      ]
+    },
+    "9": {
+      "name": "ML Training Dataset",
+      "status": "\ud83d\udd34 MISSING",
+      "evidence": [
+        "data/final/ is empty",
+        "data/processed/ is empty"
+      ],
+      "issues": [
+        "No final ML-ready dataset or train/test split exists."
+      ]
+    },
+    "10": {
+      "name": "Evaluation/Provenance",
+      "status": "\ud83d\udfe1 PARTIAL",
+      "evidence": [
+        "data/validation/step_1_2_3_validation.json exists",
+        "validation reports exist"
+      ],
+      "issues": [
+        "Full evaluation/provenance coverage is incomplete; missing end-to-end dataset traceability for all stages."
+      ]
+    }
+  },
+  "overall": {
+    "all_required_stages_present": "NO",
+    "datasets_connected_and_traceable": "NO",
+    "can_start_testing_one_stage_at_a_time": "NO",
+    "blocking_stages": [
+      "Step 2 - MANET/Topology",
+      "Step 3 - Mobility",
+      "Step 7 - DSR Routing",
+      "Step 9 - ML Training Dataset",
+      "Step 10 - Evaluation/Provenance"
+    ]
+  }
+}

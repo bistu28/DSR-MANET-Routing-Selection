@@ -1,0 +1,2 @@
+run_id,random_seed,random_run,time,source,destination,event_type,route_information
+1,1,1,100,0,149,not_available,No public DSR route trace API was exposed by the ns-3.48 installation for this baseline simulation; route path data was unavailable and no synthetic route path was invented.

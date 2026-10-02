@@ -1,0 +1,945 @@
+{
+  "dataset": "data/validation/step_batches/Mobility_data.csv",
+  "generation_date": "2026-10-01T07:20:13.152332+00:00",
+  "source_files": [
+    "data/metadata/Simulation_data.csv",
+    "ns3/results/mobility_traces/DSR_N100_MLOW_THIGH_S10001_R006.csv.gz",
+    "ns3/results/mobility_traces/DSR_N100_MLOW_THIGH_S10002_R007.csv.gz",
+    "ns3/results/mobility_traces/DSR_N100_MLOW_THIGH_S10003_R008.csv.gz",
+    "ns3/results/mobility_traces/DSR_N100_MLOW_THIGH_S10004_R009.csv.gz",
+    "ns3/results/mobility_traces/DSR_N100_MLOW_THIGH_S10005_R010.csv.gz",
+    "ns3/results/mobility_traces/DSR_N100_MLOW_TLOW_S10003_R003.csv.gz",
+    "ns3/results/mobility_traces/DSR_N100_MLOW_TLOW_S10004_R004.csv.gz",
+    "ns3/results/mobility_traces/DSR_N100_MLOW_TLOW_S10005_R005.csv.gz"
+  ],
+  "source_types": [
+    "new_ns3_simulation"
+  ],
+  "scenario_count": 8,
+  "run_count": 8,
+  "node_count": 100,
+  "nodes_processed": 800,
+  "record_count": 480800,
+  "sampling_interval_s": 1.0,
+  "mobility_models": [
+    "RandomWaypoint"
+  ],
+  "mobility_model_parameters": {
+    "speed_source": "data/metadata/Simulation_data.csv:speed_mps",
+    "random_waypoint_pause_s": 2.0,
+    "random_waypoint_pause_source": "ns-3.48 RandomWaypointMobilityModel registered default"
+  },
+  "radio_range_m": 250.0,
+  "derived_features": [
+    "velocity_x_mps",
+    "velocity_y_mps",
+    "speed_mps",
+    "direction_deg",
+    "distance_moved_m",
+    "acceleration_mps2",
+    "distance_to_nearest_neighbor_m",
+    "neighbor_count"
+  ],
+  "simulation_generated_records": 480800,
+  "existing_source_records": 0,
+  "derived_records": 480800,
+  "unique_mobility_traces_simulated_or_reused": 8,
+  "scenario_rows_reusing_equivalent_mobility_trace": 0,
+  "scenario_independence_check": {
+    "traffic_variant_a": "DSR_N100_MLOW_TLOW_S10001_R001",
+    "traffic_variant_b": "DSR_N100_MLOW_THIGH_S10001_R006",
+    "positions_identical": false,
+    "policy": "run every scenario independently"
+  },
+  "validation_results": {
+    "impossible_speed": 0,
+    "missing_time_or_negative_time": 0,
+    "broken_scenario_mapping": 0,
+    "invalid_coordinates": 0,
+    "inconsistent_speed": 0,
+    "missing_node_time_records": 0,
+    "invalid_node_ids": 0,
+    "missing_required_values": 0,
+    "duplicate_records": 0,
+    "unexpected_sampling_intervals": 0,
+    "null_cells": 490681,
+    "records": 480800,
+    "expected_records": 480800,
+    "observed_node_scenario_pairs": 800,
+    "passed": true,
+    "source_inventory_file_count": 23,
+    "coordinate_source_candidate_count": 11,
+    "compatible_existing_source_count": 0,
+    "relative_speed_unavailable_records": 480800
+  },
+  "source_inventory": [
+    {
+      "file": "data/raw/manet_dataset.csv",
+      "bytes": 2797125,
+      "rows": 54000,
+      "columns": [
+        "run_id",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "neighbor_count",
+        "avg_rssi",
+        "tx_packets",
+        "rx_packets",
+        "lost_packets",
+        "delay_sum",
+        "link_failure"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [
+        "x",
+        "y"
+      ],
+      "speed_columns": [],
+      "mobility_model_column": null,
+      "run_identifier": "run_id",
+      "scenario_identifier": null,
+      "mobility_candidate": true,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: no scenario mapping for these coordinates; node counts, duration, sampling cadence, model/seed provenance, or configured 200 m bounds do not match",
+      "observed_nodes": 30,
+      "time_min_s": 1.0,
+      "time_max_s": 60.0,
+      "time_sample_count": 60,
+      "interval_values_s": [
+        1.0
+      ],
+      "x_range_m": [
+        0.674,
+        495.99
+      ],
+      "y_range_m": [
+        1.839,
+        493.956
+      ],
+      "source_classification": "existing_simulation"
+    },
+    {
+      "file": "data/raw/nodes_dynamic.csv",
+      "bytes": 4243497,
+      "rows": 38250,
+      "columns": [
+        "run",
+        "time",
+        "node_id",
+        "energy",
+        "trust",
+        "drop_rate",
+        "mobility",
+        "forward_ratio",
+        "delay",
+        "degree",
+        "packets_received",
+        "packets_forwarded",
+        "packets_dropped",
+        "route_hits",
+        "label",
+        "attack"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [],
+      "speed_columns": [],
+      "mobility_model_column": "mobility",
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": false,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: lacks time-keyed x/y coordinates with a demonstrated scenario mapping",
+      "source_classification": "existing_simulation_or_provenance_unverified"
+    },
+    {
+      "file": "data/raw/packet_loss.csv",
+      "bytes": 12970034,
+      "rows": 50000,
+      "columns": [
+        "sim_label",
+        "run_id",
+        "ns3_seed",
+        "sim_area_m",
+        "node_count",
+        "sim_duration_s",
+        "mobility_model",
+        "channel_helper",
+        "stack",
+        "routing",
+        "timestamp",
+        "src_id",
+        "dst_id",
+        "flow_id",
+        "transport",
+        "app",
+        "ttl_hops",
+        "packet_size_bytes",
+        "pps",
+        "phy",
+        "tx_power_dbm",
+        "noise_floor_dbm",
+        "rssi_dbm",
+        "snr_db",
+        "neighbor_count",
+        "speed_mps",
+        "channel_busy_ratio",
+        "queue_len_norm",
+        "link_changes_per_s",
+        "collisions",
+        "mac_retries",
+        "backoff_slots",
+        "PRR",
+        "ETX",
+        "delay_ms",
+        "jitter_ms",
+        "PM",
+        "PQ",
+        "Peta",
+        "mac_tx_attempts",
+        "mac_tx_success",
+        "rx_success",
+        "queue_drops",
+        "cause_label",
+        "loss_occurred",
+        "drop_reason"
+      ],
+      "node_identifier": null,
+      "time_column": "timestamp",
+      "position_columns": [],
+      "speed_columns": [
+        "speed_mps"
+      ],
+      "mobility_model_column": "mobility_model",
+      "run_identifier": "run_id",
+      "scenario_identifier": null,
+      "mobility_candidate": false,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: lacks time-keyed x/y coordinates with a demonstrated scenario mapping",
+      "source_classification": "existing_simulation_or_provenance_unverified"
+    },
+    {
+      "file": "data/raw/positions_100_run1.csv",
+      "bytes": 158374,
+      "rows": 5100,
+      "columns": [
+        "run",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "speed"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [
+        "x",
+        "y"
+      ],
+      "speed_columns": [
+        "speed"
+      ],
+      "mobility_model_column": null,
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": true,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: no scenario mapping for these coordinates; node counts, duration, sampling cadence, model/seed provenance, or configured 200 m bounds do not match",
+      "observed_nodes": 100,
+      "time_min_s": 0.0,
+      "time_max_s": 500.0,
+      "time_sample_count": 51,
+      "interval_values_s": [
+        10.0
+      ],
+      "x_range_m": [
+        0.58,
+        997.55
+      ],
+      "y_range_m": [
+        0.1,
+        999.75
+      ],
+      "source_classification": "existing_simulation"
+    },
+    {
+      "file": "data/raw/positions_150n_seed1.csv",
+      "bytes": 240284,
+      "rows": 7650,
+      "columns": [
+        "run",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "speed"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [
+        "x",
+        "y"
+      ],
+      "speed_columns": [
+        "speed"
+      ],
+      "mobility_model_column": null,
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": true,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: no scenario mapping for these coordinates; node counts, duration, sampling cadence, model/seed provenance, or configured 200 m bounds do not match",
+      "observed_nodes": 150,
+      "time_min_s": 0.0,
+      "time_max_s": 500.0,
+      "time_sample_count": 51,
+      "interval_values_s": [
+        10.0
+      ],
+      "x_range_m": [
+        0.52,
+        999.29
+      ],
+      "y_range_m": [
+        0.39,
+        997.15
+      ],
+      "source_classification": "existing_simulation"
+    },
+    {
+      "file": "data/raw/positions_150n_seed2.csv",
+      "bytes": 240184,
+      "rows": 7650,
+      "columns": [
+        "run",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "speed"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [
+        "x",
+        "y"
+      ],
+      "speed_columns": [
+        "speed"
+      ],
+      "mobility_model_column": null,
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": true,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: no scenario mapping for these coordinates; node counts, duration, sampling cadence, model/seed provenance, or configured 200 m bounds do not match",
+      "observed_nodes": 150,
+      "time_min_s": 0.0,
+      "time_max_s": 500.0,
+      "time_sample_count": 51,
+      "interval_values_s": [
+        10.0
+      ],
+      "x_range_m": [
+        1.47,
+        999.38
+      ],
+      "y_range_m": [
+        0.46,
+        999.15
+      ],
+      "source_classification": "existing_simulation"
+    },
+    {
+      "file": "data/raw/positions_150n_seed3.csv",
+      "bytes": 240293,
+      "rows": 7650,
+      "columns": [
+        "run",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "speed"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [
+        "x",
+        "y"
+      ],
+      "speed_columns": [
+        "speed"
+      ],
+      "mobility_model_column": null,
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": true,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: no scenario mapping for these coordinates; node counts, duration, sampling cadence, model/seed provenance, or configured 200 m bounds do not match",
+      "observed_nodes": 150,
+      "time_min_s": 0.0,
+      "time_max_s": 500.0,
+      "time_sample_count": 51,
+      "interval_values_s": [
+        10.0
+      ],
+      "x_range_m": [
+        0.21,
+        999.39
+      ],
+      "y_range_m": [
+        3.48,
+        999.96
+      ],
+      "source_classification": "existing_simulation"
+    },
+    {
+      "file": "data/raw/positions_150n_seed4.csv",
+      "bytes": 240167,
+      "rows": 7650,
+      "columns": [
+        "run",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "speed"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [
+        "x",
+        "y"
+      ],
+      "speed_columns": [
+        "speed"
+      ],
+      "mobility_model_column": null,
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": true,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: no scenario mapping for these coordinates; node counts, duration, sampling cadence, model/seed provenance, or configured 200 m bounds do not match",
+      "observed_nodes": 150,
+      "time_min_s": 0.0,
+      "time_max_s": 500.0,
+      "time_sample_count": 51,
+      "interval_values_s": [
+        10.0
+      ],
+      "x_range_m": [
+        0.22,
+        999.33
+      ],
+      "y_range_m": [
+        0.0,
+        999.9
+      ],
+      "source_classification": "existing_simulation"
+    },
+    {
+      "file": "data/raw/positions_150n_seed5.csv",
+      "bytes": 240500,
+      "rows": 7650,
+      "columns": [
+        "run",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "speed"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [
+        "x",
+        "y"
+      ],
+      "speed_columns": [
+        "speed"
+      ],
+      "mobility_model_column": null,
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": true,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: no scenario mapping for these coordinates; node counts, duration, sampling cadence, model/seed provenance, or configured 200 m bounds do not match",
+      "observed_nodes": 150,
+      "time_min_s": 0.0,
+      "time_max_s": 500.0,
+      "time_sample_count": 51,
+      "interval_values_s": [
+        10.0
+      ],
+      "x_range_m": [
+        1.73,
+        997.85
+      ],
+      "y_range_m": [
+        0.89,
+        999.8
+      ],
+      "source_classification": "existing_simulation"
+    },
+    {
+      "file": "data/raw/positions_200_run1.csv",
+      "bytes": 322202,
+      "rows": 10200,
+      "columns": [
+        "run",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "speed"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [
+        "x",
+        "y"
+      ],
+      "speed_columns": [
+        "speed"
+      ],
+      "mobility_model_column": null,
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": true,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: no scenario mapping for these coordinates; node counts, duration, sampling cadence, model/seed provenance, or configured 200 m bounds do not match",
+      "observed_nodes": 200,
+      "time_min_s": 0.0,
+      "time_max_s": 500.0,
+      "time_sample_count": 51,
+      "interval_values_s": [
+        10.0
+      ],
+      "x_range_m": [
+        0.39,
+        999.89
+      ],
+      "y_range_m": [
+        0.26,
+        999.97
+      ],
+      "source_classification": "existing_simulation"
+    },
+    {
+      "file": "data/raw/positions_300_run1.csv",
+      "bytes": 486071,
+      "rows": 15300,
+      "columns": [
+        "run",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "speed"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [
+        "x",
+        "y"
+      ],
+      "speed_columns": [
+        "speed"
+      ],
+      "mobility_model_column": null,
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": true,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: no scenario mapping for these coordinates; node counts, duration, sampling cadence, model/seed provenance, or configured 200 m bounds do not match",
+      "observed_nodes": 300,
+      "time_min_s": 0.0,
+      "time_max_s": 500.0,
+      "time_sample_count": 51,
+      "interval_values_s": [
+        10.0
+      ],
+      "x_range_m": [
+        1.82,
+        999.87
+      ],
+      "y_range_m": [
+        0.15,
+        999.27
+      ],
+      "source_classification": "existing_simulation"
+    },
+    {
+      "file": "data/raw/positions_400_run1.csv",
+      "bytes": 650362,
+      "rows": 20400,
+      "columns": [
+        "run",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "speed"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [
+        "x",
+        "y"
+      ],
+      "speed_columns": [
+        "speed"
+      ],
+      "mobility_model_column": null,
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": true,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: no scenario mapping for these coordinates; node counts, duration, sampling cadence, model/seed provenance, or configured 200 m bounds do not match",
+      "observed_nodes": 400,
+      "time_min_s": 0.0,
+      "time_max_s": 500.0,
+      "time_sample_count": 51,
+      "interval_values_s": [
+        10.0
+      ],
+      "x_range_m": [
+        0.43,
+        999.97
+      ],
+      "y_range_m": [
+        0.28,
+        999.99
+      ],
+      "source_classification": "existing_simulation"
+    },
+    {
+      "file": "data/raw/positions_500_run1.csv",
+      "bytes": 814203,
+      "rows": 25500,
+      "columns": [
+        "run",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "speed"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [
+        "x",
+        "y"
+      ],
+      "speed_columns": [
+        "speed"
+      ],
+      "mobility_model_column": null,
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": true,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: no scenario mapping for these coordinates; node counts, duration, sampling cadence, model/seed provenance, or configured 200 m bounds do not match",
+      "observed_nodes": 500,
+      "time_min_s": 0.0,
+      "time_max_s": 500.0,
+      "time_sample_count": 51,
+      "interval_values_s": [
+        10.0
+      ],
+      "x_range_m": [
+        0.07,
+        999.5
+      ],
+      "y_range_m": [
+        0.04,
+        999.98
+      ],
+      "source_classification": "existing_simulation"
+    },
+    {
+      "file": "data/raw/raw.txt",
+      "bytes": 859,
+      "rows": null,
+      "columns": [],
+      "node_identifier": null,
+      "time_column": null,
+      "position_columns": [],
+      "speed_columns": [],
+      "mobility_model_column": null,
+      "run_identifier": null,
+      "scenario_identifier": null,
+      "mobility_candidate": false,
+      "compatible_scenario_count": 0,
+      "compatibility": "not a coordinate mobility source",
+      "file_type": ".txt"
+    },
+    {
+      "directory": "data/cleaned",
+      "status": "empty_or_missing"
+    },
+    {
+      "directory": "data/processed",
+      "status": "empty_or_missing"
+    },
+    {
+      "directory": "data/final",
+      "status": "empty_or_missing"
+    },
+    {
+      "file": "data/topology/README.md",
+      "bytes": 2330,
+      "rows": null,
+      "columns": [],
+      "node_identifier": null,
+      "time_column": null,
+      "position_columns": [],
+      "speed_columns": [],
+      "mobility_model_column": null,
+      "run_identifier": null,
+      "scenario_identifier": null,
+      "mobility_candidate": false,
+      "compatible_scenario_count": 0,
+      "compatibility": "not a coordinate mobility source",
+      "file_type": ".md"
+    },
+    {
+      "file": "data/topology/Topology_data.csv",
+      "bytes": 13831160,
+      "rows": 112140,
+      "columns": [
+        "scenario_id",
+        "run_id",
+        "random_seed",
+        "random_run",
+        "time_s",
+        "node_id",
+        "neighbor_id",
+        "link_src_id",
+        "link_dst_id",
+        "link_id",
+        "neighbor_count",
+        "link_exists",
+        "connectivity_source",
+        "node_count",
+        "mobility_model",
+        "observation_interval_s"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time_s",
+      "position_columns": [],
+      "speed_columns": [],
+      "mobility_model_column": "mobility_model",
+      "run_identifier": "run_id",
+      "scenario_identifier": "scenario_id",
+      "mobility_candidate": false,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: lacks time-keyed x/y coordinates with a demonstrated scenario mapping",
+      "source_classification": "existing_simulation_or_provenance_unverified"
+    },
+    {
+      "file": "data/topology/Topology_data_backup.csv",
+      "bytes": 13831160,
+      "rows": 112140,
+      "columns": [
+        "scenario_id",
+        "run_id",
+        "random_seed",
+        "random_run",
+        "time_s",
+        "node_id",
+        "neighbor_id",
+        "link_src_id",
+        "link_dst_id",
+        "link_id",
+        "neighbor_count",
+        "link_exists",
+        "connectivity_source",
+        "node_count",
+        "mobility_model",
+        "observation_interval_s"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time_s",
+      "position_columns": [],
+      "speed_columns": [],
+      "mobility_model_column": "mobility_model",
+      "run_identifier": "run_id",
+      "scenario_identifier": "scenario_id",
+      "mobility_candidate": false,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: lacks time-keyed x/y coordinates with a demonstrated scenario mapping",
+      "source_classification": "existing_simulation_or_provenance_unverified"
+    },
+    {
+      "file": "data/topology/edges_dynamic.csv",
+      "bytes": 23850153,
+      "rows": 612971,
+      "columns": [
+        "run",
+        "time",
+        "src",
+        "dst",
+        "edge_type",
+        "distance"
+      ],
+      "node_identifier": null,
+      "time_column": "time",
+      "position_columns": [],
+      "speed_columns": [],
+      "mobility_model_column": null,
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": false,
+      "compatible_scenario_count": 0,
+      "compatibility": "not a coordinate mobility source"
+    },
+    {
+      "file": "data/topology/nodes_dynamic.csv",
+      "bytes": 4243497,
+      "rows": 38250,
+      "columns": [
+        "run",
+        "time",
+        "node_id",
+        "energy",
+        "trust",
+        "drop_rate",
+        "mobility",
+        "forward_ratio",
+        "delay",
+        "degree",
+        "packets_received",
+        "packets_forwarded",
+        "packets_dropped",
+        "route_hits",
+        "label",
+        "attack"
+      ],
+      "node_identifier": "node_id",
+      "time_column": "time",
+      "position_columns": [],
+      "speed_columns": [],
+      "mobility_model_column": "mobility",
+      "run_identifier": "run",
+      "scenario_identifier": null,
+      "mobility_candidate": false,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: lacks time-keyed x/y coordinates with a demonstrated scenario mapping",
+      "source_classification": "existing_simulation_or_provenance_unverified"
+    },
+    {
+      "file": "data/topology/topology_generation_report.json",
+      "bytes": 849,
+      "rows": null,
+      "columns": [],
+      "node_identifier": null,
+      "time_column": null,
+      "position_columns": [],
+      "speed_columns": [],
+      "mobility_model_column": null,
+      "run_identifier": null,
+      "scenario_identifier": null,
+      "mobility_candidate": false,
+      "compatible_scenario_count": 0,
+      "compatibility": "not a coordinate mobility source",
+      "file_type": ".json"
+    },
+    {
+      "file": "data/metadata/README.md",
+      "bytes": 3737,
+      "rows": null,
+      "columns": [],
+      "node_identifier": null,
+      "time_column": null,
+      "position_columns": [],
+      "speed_columns": [],
+      "mobility_model_column": null,
+      "run_identifier": null,
+      "scenario_identifier": null,
+      "mobility_candidate": false,
+      "compatible_scenario_count": 0,
+      "compatibility": "not a coordinate mobility source",
+      "file_type": ".md"
+    },
+    {
+      "file": "data/metadata/Simulation_data.csv",
+      "bytes": 63486,
+      "rows": 180,
+      "columns": [
+        "scenario_id",
+        "run_id",
+        "random_seed",
+        "random_run",
+        "simulation_duration_s",
+        "node_count",
+        "area_m",
+        "area_x_m",
+        "area_y_m",
+        "mobility_model",
+        "mobility_level",
+        "speed_mps",
+        "source_id",
+        "destination_id",
+        "traffic_level",
+        "traffic_rate_bps",
+        "packet_rate_pps",
+        "packet_size_bytes",
+        "transport_protocol",
+        "application_type",
+        "routing_protocol",
+        "channel_helper",
+        "wifi_standard",
+        "phy",
+        "tx_power_dbm",
+        "noise_floor_dbm",
+        "flow_id",
+        "seed_source",
+        "endpoint_source",
+        "configuration_source",
+        "metadata_source",
+        "configuration_version"
+      ],
+      "node_identifier": null,
+      "time_column": null,
+      "position_columns": [],
+      "speed_columns": [
+        "speed_mps"
+      ],
+      "mobility_model_column": "mobility_model",
+      "run_identifier": "run_id",
+      "scenario_identifier": "scenario_id",
+      "mobility_candidate": false,
+      "compatible_scenario_count": 0,
+      "compatibility": "incompatible: lacks time-keyed x/y coordinates with a demonstrated scenario mapping",
+      "source_classification": "existing_simulation_or_provenance_unverified"
+    },
+    {
+      "file": "data/metadata/metadata_generation_report.json",
+      "bytes": 4137,
+      "rows": null,
+      "columns": [],
+      "node_identifier": null,
+      "time_column": null,
+      "position_columns": [],
+      "speed_columns": [],
+      "mobility_model_column": null,
+      "run_identifier": null,
+      "scenario_identifier": null,
+      "mobility_candidate": false,
+      "compatible_scenario_count": 0,
+      "compatibility": "not a coordinate mobility source",
+      "file_type": ".json"
+    }
+  ],
+  "warnings": [
+    "All existing coordinate sources were assessed as incompatible with the current DSR scenarios.",
+    "Topology_data.csv has nominal scenario keys but its generator selects raw positions by node count/seed modulo; those traces have 0-1000 m coordinates, 10 s cadence, and at most 500 s versus this manifest's 200 m, 1 s, 600 s RandomWaypoint runs.",
+    "relative_speed_mps is null because available topology pairs are not from the same scenario mobility realization.",
+    "neighbor_count is derived from same-time ns-3 positions and the configured hard radio range; it is geometry-based, not a measured DSR neighbor table."
+  ]
+}

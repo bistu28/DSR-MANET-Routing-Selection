@@ -1,0 +1,16 @@
+{
+  "manifest_scenario_count": 180,
+  "scenarios_completed_this_run": 2,
+  "node_time_observations_this_run": 120200,
+  "observation_interval_s": 1.0,
+  "radio_range_m": 250.0,
+  "connectivity_source": "scenario_mobility_radio_range_geometry",
+  "neighbor_encoding": "neighbor_ids_hex, with bit i representing neighbor node i",
+  "input_mobility_csv": "data/validation/step_batches/Mobility_data.csv",
+  "output_csv": "/Users/bistupaul/Movies/DISSERTATION/data/validation/step_batches/Topology_data.csv",
+  "processed_scenario_ids": [
+    "DSR_N100_MLOW_TLOW_S10001_R001",
+    "DSR_N100_MLOW_TLOW_S10002_R002"
+  ],
+  "status": "PASS"
+}

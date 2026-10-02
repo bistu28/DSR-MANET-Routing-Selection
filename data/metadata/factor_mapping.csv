@@ -1,0 +1,65 @@
+category,output_column,original_column,source_file,source_type,derived,derivation_method,unit,description,availability
+Manet,run_id,run_id,data/raw/manet_dataset.csv,existing_simulation,False,,,Run identifier from the MANET simulation snapshot,available
+Manet,time,time,data/raw/manet_dataset.csv,existing_simulation,False,,seconds,Simulation time,available
+Manet,node_id,node_id,data/raw/manet_dataset.csv,existing_simulation,False,,,Node identifier,available
+Manet,x,x,data/raw/manet_dataset.csv,existing_simulation,False,,meters,Node X coordinate,available
+Manet,y,y,data/raw/manet_dataset.csv,existing_simulation,False,,meters,Node Y coordinate,available
+Manet,neighbor_count,neighbor_count,data/raw/manet_dataset.csv,existing_simulation,False,,count,Neighbor count,available
+Manet,avg_rssi,avg_rssi,data/raw/manet_dataset.csv,existing_simulation,False,,dBm,Average RSSI value,available
+Manet,tx_packets,tx_packets,data/raw/manet_dataset.csv,existing_simulation,False,,packets,Transmitted packet count,available
+Manet,rx_packets,rx_packets,data/raw/manet_dataset.csv,existing_simulation,False,,packets,Received packet count,available
+Manet,lost_packets,lost_packets,data/raw/manet_dataset.csv,existing_simulation,False,,packets,Lost packet count,available
+Manet,delay_sum,delay_sum,data/raw/manet_dataset.csv,existing_simulation,False,,s,Cumulative delay sum,available
+Manet,link_failure,link_failure,data/raw/manet_dataset.csv,existing_simulation,False,,binary,Explicit link failure indicator,available
+Mobility,run_id,run,data/raw/positions_*.csv,existing_simulation,False,,,Mobility run identifier,available
+Mobility,time,time,data/raw/positions_*.csv,existing_simulation,False,,s,Mobility timestamp,available
+Mobility,node_id,node_id,data/raw/positions_*.csv,existing_simulation,False,,,Node identifier,available
+Mobility,x,x,data/raw/positions_*.csv,existing_simulation,False,,meters,Node X position,available
+Mobility,y,y,data/raw/positions_*.csv,existing_simulation,False,,meters,Node Y position,available
+Mobility,speed,speed,data/raw/positions_*.csv,existing_simulation,False,,m/s,Node speed,available
+Link_Quality,avg_rssi,avg_rssi,data/raw/manet_dataset.csv,existing_simulation,False,,dBm,Average RSSI,available
+Link_Quality,rssi_dbm,rssi_dbm,data/raw/packet_loss.csv,existing_simulation,False,,dBm,Instantaneous RSSI,available
+Link_Quality,snr_db,snr_db,data/raw/packet_loss.csv,existing_simulation,False,,dB,Signal-to-noise ratio,available
+Link_Quality,neighbor_count,neighbor_count,data/raw/packet_loss.csv,existing_simulation,False,,count,Neighbor count recorded in packet-loss simulation,available
+Link_Quality,PRR,PRR,data/raw/packet_loss.csv,existing_simulation,False,,ratio,Packet reception ratio,available
+Link_Quality,ETX,ETX,data/raw/packet_loss.csv,existing_simulation,False,,dimensionless,Expected transmission count,available
+Link_Quality,tx_power_dbm,tx_power_dbm,data/raw/packet_loss.csv,existing_simulation,False,,dBm,Transmission power,available
+Link_Quality,noise_floor_dbm,noise_floor_dbm,data/raw/packet_loss.csv,existing_simulation,False,,dBm,Noise floor,available
+Network_Performance,tx_packets,tx_packets,data/raw/manet_dataset.csv,existing_simulation,False,,packets,Transmitted packets,available
+Network_Performance,rx_packets,rx_packets,data/raw/manet_dataset.csv,existing_simulation,False,,packets,Received packets,available
+Network_Performance,lost_packets,lost_packets,data/raw/manet_dataset.csv,existing_simulation,False,,packets,Lost packet count,available
+Network_Performance,delay_sum,delay_sum,data/raw/manet_dataset.csv,existing_simulation,False,,s,Cumulative delay sum,available
+Network_Performance,delay_ms,delay_ms,data/raw/packet_loss.csv,existing_simulation,False,,ms,Per-flow delay in milliseconds,available
+Network_Performance,jitter_ms,jitter_ms,data/raw/packet_loss.csv,existing_simulation,False,,ms,Jitter in milliseconds,available
+Network_Performance,PRR,PRR,data/raw/packet_loss.csv,existing_simulation,False,,ratio,Packet reception ratio,available
+Network_Performance,mac_tx_attempts,mac_tx_attempts,data/raw/packet_loss.csv,existing_simulation,False,,attempts,MAC transmission attempts,available
+Network_Performance,mac_tx_success,mac_tx_success,data/raw/packet_loss.csv,existing_simulation,False,,successes,MAC transmission successes,available
+Network_Performance,rx_success,rx_success,data/raw/packet_loss.csv,existing_simulation,False,,packets,Successful receive count,available
+Congestion,channel_busy_ratio,channel_busy_ratio,data/raw/packet_loss.csv,existing_simulation,False,,ratio,Channel busy ratio,available
+Congestion,queue_len_norm,queue_len_norm,data/raw/packet_loss.csv,existing_simulation,False,,normalized,Normalized queue length,available
+Congestion,collisions,collisions,data/raw/packet_loss.csv,existing_simulation,False,,count,Collision count,available
+Congestion,mac_retries,mac_retries,data/raw/packet_loss.csv,existing_simulation,False,,retries,MAC retry count,available
+Congestion,backoff_slots,backoff_slots,data/raw/packet_loss.csv,existing_simulation,False,,slots,Backoff slots used,available
+Congestion,queue_drops,queue_drops,data/raw/packet_loss.csv,existing_simulation,False,,packets,Queue drops,available
+Congestion,link_changes_per_s,link_changes_per_s,data/raw/packet_loss.csv,existing_simulation,False,,1/s,Link changes per second,available
+DSR_Routing,routing,routing,data/raw/packet_loss.csv,existing_simulation,False,,protocol,"Routing protocol label; generic, not DSR-specific route-state metadata",available
+DSR_Routing,ttl_hops,ttl_hops,data/raw/packet_loss.csv,existing_simulation,False,,hops,TTL hop limit in the packet flow,available
+DSR_Routing,route_id,,,unknown,False,,,No route_id field was found in the raw CSVs,unavailable
+DSR_Routing,rreq,,,unknown,False,,,No DSR RREQ events were found in the raw CSVs,unavailable
+Failure_Recovery,link_failure,link_failure,data/raw/manet_dataset.csv,existing_simulation,False,,binary,Link failure flag from the MANET dataset,available
+Failure_Recovery,loss_occurred,loss_occurred,data/raw/packet_loss.csv,existing_simulation,False,,binary,Packet loss occurred indicator,available
+Failure_Recovery,drop_reason,drop_reason,data/raw/packet_loss.csv,existing_simulation,False,,categorical,Cause label for packet drop,available
+Failure_Recovery,cause_label,cause_label,data/raw/packet_loss.csv,existing_simulation,False,,categorical,Drop cause classification,available
+Failure_Recovery,recovery_time,,,unknown,False,,,No explicit recovery timestamp or route-repair event field was present in the raw CSVs,unavailable
+Manet,scenario_id,scenario_id,data/topology/Topology_data.csv,existing_simulation,false,,,Scenario identifier preserved from topology manifest,available
+Manet,random_seed,random_seed,data/topology/Topology_data.csv,existing_simulation,false,,,Random seed for topology scenario generation,available
+Manet,random_run,random_run,data/topology/Topology_data.csv,existing_simulation,false,,,Random-run index preserved from the manifest,available
+Manet,neighbor_id,neighbor_id,data/topology/Topology_data.csv,existing_simulation,false,,,Neighbor identifier in the geometry-derived adjacency graph,available
+Manet,link_src_id,link_src_id,data/topology/Topology_data.csv,existing_simulation,false,,,Source node ID for each link tuple,available
+Manet,link_dst_id,link_dst_id,data/topology/Topology_data.csv,existing_simulation,false,,,Destination node ID for each link tuple,available
+Manet,link_id,link_id,data/topology/Topology_data.csv,existing_simulation,false,,,Link identifier string,available
+Manet,link_exists,link_exists,data/topology/Topology_data.csv,existing_simulation,false,,binary,Boolean link existence indicator from radio-range geometry,available
+Manet,connectivity_source,connectivity_source,data/topology/Topology_data.csv,existing_simulation,false,,,Connectivity generation source: radio_range_geometry,available
+Manet,node_count,node_count,data/topology/Topology_data.csv,existing_simulation,false,,nodes,Node count for the scenario,available
+Manet,mobility_model,mobility_model,data/topology/Topology_data.csv,existing_simulation,false,,,Mobility model label used for the scenario,available
+Manet,observation_interval_s,observation_interval_s,data/topology/Topology_data.csv,existing_simulation,false,,s,Observation interval used during topology generation,available

@@ -1,0 +1,16 @@
+feature,importance
+link_quality,0.1700972
+node_speed,0.12659457
+remaining_energy,0.11158333
+route_failure_events_before,0.104694754
+mobility_risk,0.07593454
+packet_loss,0.06917828
+queue_length,0.06874111
+loss_delay_interaction,0.04588398
+snr_db,0.03927923
+hop_count,0.036524475
+route_stability,0.035150055
+pdr,0.031664062
+rssi_dbm,0.030040259
+throughput_bps,0.029619642
+end_to_end_delay_ms,0.025014592

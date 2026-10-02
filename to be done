@@ -1,0 +1,11 @@
+Step	Dataset Stage	Status	Main Available Factors	Missing/Critical Issue
+1	Simulation Metadata	🟢 COMPLETE	scenario_id, run_id, random_seed, random_run, node_count, mobility_model, routing_protocol, source_id, destination_id	None apparent in current manifest
+2	MANET/Topology	🟡 PARTIAL	node_id, neighbor_id, link_src_id, link_dst_id, link_id, neighbor_count, link_exists	Only 1 scenario covered; not the full 180-scenario manifest
+3	Mobility	🟡 PARTIAL	scenario_id, run_id, time_s, node_id, x_m, y_m, speed_mps, velocity_x_mps, velocity_y_mps	Only 5 scenarios covered; not full matrix
+4	Link Quality	🟡 PARTIAL	RSSI, SNR, PRR, ETX, tx_power_dbm, noise_floor_dbm	Factors exist but not full scenario-aligned end-to-end dataset
+5	Network Performance	🟡 PARTIAL	tx_packets, rx_packets, lost_packets, delay_sum, delay_ms, jitter_ms	Available, but not proven to cover full DSR pipeline
+6	Congestion/MAC	🟡 PARTIAL	channel_busy_ratio, queue_len_norm, collisions, mac_retries, backoff_slots, queue_drops	Congestion indicators exist, but not complete scenario-aligned pipeline data
+7	DSR Routing	🔴 MISSING	routing label, ttl_hops, flow_id	No DSR-specific route state found: no route_id, RREQ/RREP/RERR, route_path, route_repair metadata
+8	Failure/Recovery	🟡 PARTIAL	link_failure, loss_occurred, drop_reason, cause_label	No explicit recovery or route repair metadata
+9	ML Training Dataset	🔴 MISSING	None found	data/final and data/processed are empty; no ML-ready dataset
+10	Evaluation/Provenance	🟡 PARTIAL	validation JSON/MD files, generation reports	Full end-to-end provenance not complete across all stages

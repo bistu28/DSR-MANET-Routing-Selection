@@ -1,0 +1,185 @@
+{
+  "project": "An Intelligent Multi-Factor Route Selection and Adaptive Recovery Framework for DSR-Based Mobile Ad Hoc Networks Using Random Forest and XGBoost",
+  "raw_files_inspected": [
+    "manet_dataset.csv",
+    "manet_raw_dataset.csv",
+    "nodes_dynamic.csv",
+    "packet_loss.csv",
+    "positions_100_run1.csv",
+    "positions_150n_seed1.csv",
+    "positions_150n_seed2.csv",
+    "positions_150n_seed3.csv",
+    "positions_150n_seed4.csv",
+    "positions_150n_seed5.csv",
+    "positions_200_run1.csv",
+    "positions_300_run1.csv",
+    "positions_400_run1.csv",
+    "positions_500_run1.csv"
+  ],
+  "raw_rows_inspected": 311000,
+  "categories": {
+    "Manet": {
+      "csv": "data/metadata/Manet.csv",
+      "factors_found": [
+        "run_id",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "neighbor_count",
+        "avg_rssi",
+        "tx_packets",
+        "rx_packets",
+        "lost_packets",
+        "delay_sum",
+        "link_failure"
+      ],
+      "source_files": [
+        "data/raw/manet_dataset.csv",
+        "data/topology/Topology_data.csv"
+      ],
+      "derived_factors": 0,
+      "notes": "Direct MANET telemetry plus geometry-derived connectivity metadata from the topology CSV were retained with provenance."
+    },
+    "Mobility": {
+      "csv": "data/metadata/Mobility.csv",
+      "factors_found": [
+        "run_id",
+        "time",
+        "node_id",
+        "x",
+        "y",
+        "speed"
+      ],
+      "source_files": [
+        "data/raw/positions_100_run1.csv",
+        "data/raw/positions_150n_seed1.csv",
+        "data/raw/positions_150n_seed2.csv",
+        "data/raw/positions_150n_seed3.csv",
+        "data/raw/positions_150n_seed4.csv",
+        "data/raw/positions_150n_seed5.csv",
+        "data/raw/positions_200_run1.csv",
+        "data/raw/positions_300_run1.csv",
+        "data/raw/positions_400_run1.csv",
+        "data/raw/positions_500_run1.csv"
+      ],
+      "derived_factors": 0,
+      "notes": "Mobility position files provide x/y/speed; these were retained without fabricating direction or velocity."
+    },
+    "Link_Quality": {
+      "csv": "data/metadata/Link_Quality.csv",
+      "factors_found": [
+        "avg_rssi",
+        "rssi_dbm",
+        "snr_db",
+        "neighbor_count",
+        "PRR",
+        "ETX",
+        "noise_floor_dbm",
+        "tx_power_dbm"
+      ],
+      "source_files": [
+        "data/raw/manet_dataset.csv",
+        "data/raw/packet_loss.csv"
+      ],
+      "derived_factors": 0,
+      "notes": "Wireless link quality values were directly present; no attempt was made to infer absent metrics."
+    },
+    "Network_Performance": {
+      "csv": "data/metadata/Network_Performance.csv",
+      "factors_found": [
+        "tx_packets",
+        "rx_packets",
+        "lost_packets",
+        "delay_sum",
+        "delay_ms",
+        "jitter_ms",
+        "PRR",
+        "mac_tx_attempts",
+        "mac_tx_success",
+        "rx_success"
+      ],
+      "source_files": [
+        "data/raw/manet_dataset.csv",
+        "data/raw/packet_loss.csv"
+      ],
+      "derived_factors": 0,
+      "notes": "Performance metrics were directly represented in the raw CSVs; cumulative and per-flow values were preserved as-is."
+    },
+    "Congestion": {
+      "csv": "data/metadata/Congestion.csv",
+      "factors_found": [
+        "channel_busy_ratio",
+        "queue_len_norm",
+        "collisions",
+        "mac_retries",
+        "backoff_slots",
+        "queue_drops",
+        "link_changes_per_s"
+      ],
+      "source_files": [
+        "data/raw/packet_loss.csv"
+      ],
+      "derived_factors": 0,
+      "notes": "Congestion and resource-allocation indicators were present in the packet-level simulation CSV."
+    },
+    "DSR_Routing": {
+      "csv": "data/metadata/DSR_Routing.csv",
+      "factors_found": [
+        "routing",
+        "ttl_hops",
+        "flow_id"
+      ],
+      "source_files": [
+        "data/raw/packet_loss.csv"
+      ],
+      "derived_factors": 0,
+      "notes": "No DSR-specific route-state fields were found; the generic protocol field exists but does not prove DSR route events."
+    },
+    "Failure_Recovery": {
+      "csv": "data/metadata/Failure_Recovery.csv",
+      "factors_found": [
+        "link_failure",
+        "loss_occurred",
+        "drop_reason",
+        "cause_label"
+      ],
+      "source_files": [
+        "data/raw/manet_dataset.csv",
+        "data/raw/packet_loss.csv"
+      ],
+      "derived_factors": 0,
+      "notes": "Failure indicators were present, but no explicit recovery or route-repair field was found in the raw data."
+    }
+  },
+  "derived_factors": [],
+  "unavailable_factors": [
+    "DSR-specific route metadata: route_id, route_path, route_lifetime, rreq/rrep/rerr counts, route repair times, route discovery times, recovery_time, recovery_success, alternate_route",
+    "Explicit DSR route events for RREQ/RREP/RERR were unavailable in the raw CSVs",
+    "Explicit route-recovery metrics were unavailable in the raw CSVs"
+  ],
+  "data_quality_notes": {
+    "duplicate_rows": "No duplicates were removed automatically; provenance was preserved by source_file and original identifiers.",
+    "missing_values": "Original missing values were retained in the extracted metadata; blank cells indicate absence in the raw source.",
+    "incompatible_experiments": "Different raw files were not merged blindly; each category retains source provenance."
+  },
+  "topology_included": {
+    "source_file": "data/topology/Topology_data.csv",
+    "source_type": "existing_simulation",
+    "added_fields": [
+      "scenario_id",
+      "random_seed",
+      "random_run",
+      "neighbor_id",
+      "link_src_id",
+      "link_dst_id",
+      "link_id",
+      "link_exists",
+      "connectivity_source",
+      "node_count",
+      "mobility_model",
+      "observation_interval_s"
+    ],
+    "notes": "Included as a geometry-derived topology source for connectivity and adjacency metadata; not treated as RF or DSR route-state data."
+  }
+}

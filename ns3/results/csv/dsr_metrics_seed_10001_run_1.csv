@@ -1,0 +1,2 @@
+run_id,random_seed,random_run,timestamp_s,node_count,source,destination,tx_packets,rx_packets,tx_bytes,rx_bytes,packet_loss,pdr,throughput_bps,delay_ms,packet_size,traffic_rate,area_size,node_speed,mobility_model,routing_protocol,measurement_layer
+1,10001,1,600,100,10.1.1.19,10.1.1.51,50883,50882,20607615,20607210,1,0.999980,275681.739130,,405,275692bps,200.000000,0.660000,RandomWalk2dMobilityModel,DSR,application_trace

@@ -1,0 +1,7 @@
+manet_dataset.csv - run_id,time,node_id,x,y,neighbor_count,avg_rssi,tx_packets,rx_packets,lost_packets,delay_sum,link_failure
+
+nodes_dynamics.csv - run,time,node_id,energy,trust,drop_rate,mobility,forward_ratio,delay,degree,packets_received,packets_forwarded,packets_dropped,route_hits,label,attack
+
+packet_loss.csv - sim_label,run_id,ns3_seed,sim_area_m,node_count,sim_duration_s,mobility_model,channel_helper,stack,routing,timestamp,src_id,dst_id,flow_id,transport,app,ttl_hops,packet_size_bytes,pps,phy,tx_power_dbm,noise_floor_dbm,rssi_dbm,snr_db,neighbor_count,speed_mps,channel_busy_ratio,queue_len_norm,link_changes_per_s,collisions,mac_retries,backoff_slots,PRR,ETX,delay_ms,jitter_ms,PM,PQ,Peta,mac_tx_attempts,mac_tx_success,rx_success,queue_drops,cause_label,loss_occurred,drop_reason
+
+positions_100,150,200,300,400,500 - run,time,node_id,x,y,speed

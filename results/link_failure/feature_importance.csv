@@ -1,0 +1,11 @@
+feature,importance
+neighbor_count,0.92604154
+avg_rssi,0.03753092
+y,0.020423178
+x,0.016004274
+tx_packets,0.0
+rx_packets,0.0
+lost_packets,0.0
+delay_sum,0.0
+delivery_ratio_engineered,0.0
+loss_ratio_engineered,0.0

@@ -1,0 +1,13 @@
+{
+  "experiments": [
+    {"id": "A_baseline_dsr", "routing": "DSR", "model": null},
+    {"id": "B_dsr_random_forest", "routing": "DSR", "model": "random_forest"},
+    {"id": "C_dsr_xgboost", "routing": "DSR", "model": "xgboost_baseline"},
+    {"id": "D_dsr_tuned_best", "routing": "DSR", "model": "best_model_tuned"}
+  ],
+  "network_metrics": [
+    "pdr", "throughput_bps", "end_to_end_delay_ms", "packet_loss",
+    "routing_overhead", "route_failure_events", "recovery_time_ms", "recovery_success_rate"
+  ],
+  "ml_metrics": ["accuracy", "precision", "recall", "f1", "roc_auc", "inference_time_seconds"]
+}

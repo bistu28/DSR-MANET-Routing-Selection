@@ -1,0 +1,16 @@
+{
+  "selected_baseline": "xgboost_baseline",
+  "validation_f1": {
+    "random_forest": 0.6230308409141335,
+    "xgboost_baseline": 0.7149810708491077
+  },
+  "best_params": {
+    "subsample": 1.0,
+    "n_estimators": 250,
+    "max_depth": 7,
+    "learning_rate": 0.15,
+    "colsample_bytree": 0.8
+  },
+  "metric": "f1",
+  "cv": 5
+}

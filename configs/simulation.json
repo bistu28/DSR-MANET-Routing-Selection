@@ -1,0 +1,15 @@
+{
+  "node_count": 20,
+  "simulation_time": 100.0,
+  "area_size": 200.0,
+  "node_speed": 5.0,
+  "mobility_model": "RandomWalk2dMobilityModel",
+  "traffic_rate": "2kbps",
+  "packet_size": 512,
+  "source": 0,
+  "destination": 19,
+  "random_seed": 7,
+  "random_run": 1,
+  "udp_port": 9000,
+  "output_dir": "results"
+}

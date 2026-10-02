@@ -1,0 +1,140 @@
+DATASET STATUS
+
+Overall: PARTIALLY READY. The project has reproducible cleaning/feature scripts, trained RF/XGBoost artifacts for three different labels, multiple independent source datasets, and one measured DSR baseline. It does not yet have a validated DSR future-route-failure training set or an end-to-end ML-assisted DSR experiment.
+
+This was a read-only audit. No models were trained and no existing files were changed. Virtual-environment package sample data was excluded from the research inventory.
+
+CURRENT DATASETS
+
+There are 13 raw source CSVs, 257,000 rows total: 142,250 rows in three labeled sources and 114,750 mobility rows. These totals must not be pooled as one ML dataset. Raw inventory, schemas, hashes, and source classifications are in data/processed/raw_inventory.csv and data/processed/dataset_registry.csv.
+
+Raw source inventory (size; rows x columns; schema/status):
+
+- data/raw/manet_dataset.csv (2,797,125 B; 54,000 x 12): numeric run_id,time,node_id,x,y,neighbor_count,avg_rssi,tx_packets,rx_packets,lost_packets,delay_sum,link_failure. 30 runs x 30 nodes x 60 time points. Conditional link-failure candidate; not verified DSR.
+- data/raw/nodes_dynamic.csv (4,243,497 B; 38,250 x 16): numeric node/time features plus categorical attack: run,time,node_id,energy,trust,drop_rate,mobility,forward_ratio,delay,degree,packets_received,packets_forwarded,packets_dropped,route_hits,label,attack. Five runs x 150 nodes x 51 time points. Attack/anomaly data, not route failure.
+- data/raw/packet_loss.csv (12,970,034 B; 50,000 x 46): includes simulation metadata, timestamp, endpoints/flow, RSSI/SNR, PRR/ETX, queue/MAC/network metrics, cause_label, loss_occurred, drop_reason. Source marker is ns3_v1, but routing is mixed (AODV/DSR/OLSR/RPL), as are PHY/stack/mobility conditions; not the project's DSR trace.
+- data/raw/positions_100_run1.csv (158,374 B; 5,100 x 6): run,time,node_id,x,y,speed; mobility only.
+- data/raw/positions_150n_seed1.csv (240,284 B; 7,650 x 6): same mobility schema; seed encoded in filename, not a column.
+- data/raw/positions_150n_seed2.csv (240,184 B; 7,650 x 6): same mobility schema.
+- data/raw/positions_150n_seed3.csv (240,293 B; 7,650 x 6): same mobility schema.
+- data/raw/positions_150n_seed4.csv (240,167 B; 7,650 x 6): same mobility schema.
+- data/raw/positions_150n_seed5.csv (240,500 B; 7,650 x 6): same mobility schema.
+- data/raw/positions_200_run1.csv (322,202 B; 10,200 x 6): same mobility schema.
+- data/raw/positions_300_run1.csv (486,071 B; 15,300 x 6): same mobility schema.
+- data/raw/positions_400_run1.csv (650,362 B; 20,400 x 6): same mobility schema.
+- data/raw/positions_500_run1.csv (814,203 B; 25,500 x 6): same mobility schema.
+
+All columns in manet_dataset and the position datasets are numeric. nodes_dynamic.attack is categorical. In packet_loss, categorical fields include sim_label, area/model/stack/routing/transport/app/PHY metadata, timestamp, and the cause/drop labels; the remaining fields are numeric. All 13 cleaned counterparts report zero missing values and zero duplicate rows. Cleaning reports outliers but retains them; for example, avg_rssi in manet_dataset has 3,900 reported outliers. See data/cleaned/cleaning_summary.csv.
+
+Other dataset states:
+- data/processed/ has separate engineered files for the 13 raw datasets, plus summaries, registries, feature mappings, and split membership files. The smoke feature table is 500 x 16.
+- data/final/ contains copies of the link-failure and packet-loss cleaned datasets, mobility copies, the smoke feature table, and manifests. dsr_final/ contains only a README reserving it for future real DSR data.
+- No merged dataset exists. The project's manifests explicitly keep sources separate.
+- The original synthetic raw input referenced by the smoke report, data/raw/smoke_route_failure.csv, is not currently in the raw directory. Its engineered 500-row copy remains in data/processed/features.csv and data/final/smoke_test/.
+
+SIMULATION, MODELS, AND PIPELINE
+
+Project simulation sources are ns3/scratch/dsr_manet_smoke.cc and ns3/scratch/dsr_manet_dataset.cc, launched/configured through ns3/run_configured.py. The current Colab config is 20 nodes, 100 seconds, 200 m square, 5 m/s, one UDP flow at 2 kbps with 512-byte packets, seed 7/run 1. The saved local baseline is a different run: ns-3.48, 150 nodes, 500 m square, seed 1/run 1, source 0 to destination 149.
+
+That baseline produced 47 application transmissions, 45 receptions, PDR 95.74%, and goodput 1,880.82 bit/s. It has one aggregate metrics row, 15,000 per-node mobility rows sampled once per second, one route-status row marked not_available, a FlowMonitor XML with no classifiable flow, a NetAnim XML with no packet markers, one log, plots, and a report. Delay and route paths were not measured. These artifacts are under ns3/results/.
+
+Training artifacts total nine .joblib files: RF, XGBoost baseline, and tuned model for each of the smoke, link-failure, and packet-loss runs. They are in models/, models/link_failure/, and models/packet_loss/. The latter runs trained on their own source labels: 54,000 link_failure rows and 50,000 loss_occurred rows. Their saved splits are row-level random splits, not run/seed/scenario-held-out tests.
+
+Actual pipeline paths:
+
+ns-3 config -> run_configured.py -> dsr_manet_smoke.cc -> simulation outputs
+raw CSV -> clean_dataset.py -> cleaned CSV + audit
+cleaned CSV -> feature_engineering.py -> per-file feature CSV + report
+selected CSV -> run_experiment.py -> random row split -> RF/XGBoost/tuning -> model and metrics
+raw inventory -> organize_data.py -> registries/manifests/final copies (no merging)
+
+run_experiment.py uses stratified train_test_split by row, then five-fold CV for tuning. It reports accuracy, precision, recall, F1, ROC-AUC, confusion matrices/classification reports, inference time, and feature importance. PR-AUC, explicit FPR/FNR, calibration, and threshold selection are not implemented. configs/experiments.json names experiments A-D, but those names are not evidence that they have run. No automated test suite was found; test.ipynb is the only test-named project item.
+
+TARGET / LEAKAGE AUDIT
+
+route_failure:
+Only the generated smoke table. generate_smoke_dataset.py calculates it from synthetic features plus noise. It is not generated from future simulation events; there are no observation times or prediction horizon. The 5-second setting in configs/ml.json is not applied by a label generator. Not valid dissertation evidence.
+
+link_failure:
+manet_dataset has 11,185 positive / 42,815 negative rows. Its source meaning is explicitly preserved as unknown. Current versus future failure and horizon are undocumented. Conditional link-failure classification only, not verified forecasting or DSR route failure.
+
+loss_occurred:
+Packet-loss data has 10,754 positive / 39,246 negative rows. cause_label and drop_reason describe loss outcomes. It appears to label packet-loss occurrence, not route failure. Its exact time relationship to features is unverified. Keep separate.
+
+label and attack:
+nodes_dynamic has 2,580 positive binary labels; attack classes are normal 35,670, blackhole 1,230, greyhole 930, wormhole 420. This is attack/anomaly classification, not route/link failure. Label timing and semantics need source documentation.
+
+cause_label and sim_label:
+Packet-loss causes include benign, congestion, interference, malicious, mobility; sim_label is ns3_v1 on every row. Cause is an outcome descriptor, not a failure target. sim_label is provenance metadata, not a useful target.
+
+route_status and link_status:
+No such target columns found.
+
+The smoke label is artificial by construction. For the independent datasets, target values are retained and target-like columns are excluded or non-numeric, but feature timing is not proven. cause_label/drop_reason are explicitly leakage exclusions in the experiment path. Other same-event fields such as queue_drops, rx_success, packet loss, delay, and MAC counters need temporal semantics before use as pre-event predictors.
+
+DATA QUALITY AND TEMPORAL COVERAGE
+
+Mechanical cleaning is good, but research validity is not established:
+
+- manet_dataset has no seed, source/destination, route/link ID, or documented generator. tx_packets, rx_packets, lost_packets, and delay_sum are zero in every row. avg_rssi ranges from -1000 to -3.993, suggesting an undocumented sentinel or invalid readings.
+- packet_loss.csv has 10 run IDs and 480 timestamp values, but its ns3_seed field has 49,871 distinct values across 50,000 rows, so it does not behave like a per-simulation seed. 44,186/50,000 source IDs and 44,065/50,000 destination IDs exceed that row's node_count; 102 rows have identical source and destination. neighbor_count reaches 2,070 despite a maximum recorded node count of 150. These contradictions require provenance/schema validation before modeling.
+- packet_loss.csv spans node counts 20/40/60/100/150, areas 200x200/500x500/800x800, durations 300/600/900 seconds, three mobility regimes, and four routing protocols. It is heterogeneous, not a DSR-only dataset. Its RSSI/SNR fields exist in the file, but are not produced by this project's DSR simulator.
+- Position datasets have run,time,node_id,x,y,speed, 51 time points from 0-500, coordinates roughly 0-1000 m, and speeds 0-25 m/s. They have no target or DSR route/link events. Five seeds exist for 150 nodes; other node-count files show one run each.
+- The project's own DSR mobility trace has time, node ID, X/Y, and velocity X/Y for one run/seed only. It can support mobility analysis, but no route/link event labels exist to align with it.
+
+Factor coverage:
+Topology has node ID and neighbor count in some sources; source/destination only in the mixed packet-loss file. Mobility has X/Y, time, speed, and in the DSR trace velocity; no Z or explicit direction (direction can be derived from velocity). RSSI/SNR, PRR/ETX, retries, queue, collisions, jitter, and channel-busy fields exist only in independent packet-loss data, not the project DSR run. The DSR run measures application Tx/Rx and aggregate PDR/goodput only. Route IDs/paths, candidate/backup routes, route age/stability, RREQ/RREP/RERR/cache events, route breaks, recovery, and recovery time are not captured. Energy exists only in nodes_dynamic, not DSR; treat it as optional unless energy-aware routing is an explicit dissertation claim.
+
+MODEL AND DSR READINESS
+
+Random Forest: NOT READY for the intended DSR future-failure task. It has been trained on synthetic route_failure, independent link_failure, and packet-loss data, but none is a validated DSR future-window dataset.
+
+XGBoost: NOT READY for the intended DSR future-failure task. Same limitation. Current row-level splits can put observations from the same run/time series in both train and test, overstating generalization. Use grouped splits by simulation run/seed/scenario.
+
+MODEL TRAINING EXISTS BUT DSR INTEGRATION IS NOT IMPLEMENTED. No model loading, prediction-to-route score, route selection, or adaptive recovery path was found in the DSR C++ code. Therefore DSR integration and end-to-end comparison are NOT READY.
+
+For failure prediction, prioritize recall and PR-AUC, while reporting FPR/FNR and precision: missed failures harm delivery, while too many false alarms can trigger needless route changes. Threshold selection/calibration is useful after a valid held-out dataset exists; SHAP is optional, not a blocker.
+
+MINIMUM DATASET SCHEMA
+
+Each row should represent one link or active route at observation time t, with simulation/run keys and features strictly available by t. Generate route_failure separately from an event log: failure within the configured five-second future window.
+
+Simulation/time (required): scenario_id,run_id,random_seed,random_run,time_s,node_count,mobility_model,area_m,traffic_rate_bps,packet_size_bytes.
+Identity (required): observation_level,source_id,destination_id,link_src_id,link_dst_id,route_id (where applicable); stable IDs and keys are necessary for grouping/joining.
+Node/link state (required): x_m,y_m,speed_mps,velocity_x_mps,velocity_y_mps,distance_m,neighbor_count,rssi_dbm,snr_db,prr_window,loss_rate_window,mac_retries_window.
+Route/network state (required): route_hop_count,route_age_s,route_discovery_count,route_error_count,route_changes,queue_occupancy,throughput_bps,delay_ms,jitter_ms.
+Label only: route_failure_within_5s; retain link_failure as a distinct task if separately defined.
+
+Route path/candidate routes, backup availability, DSR request/reply/error/cache events, and link lifetime are strongly recommended for the route-selection/recovery claim. Energy is optional unless included as a claimed model factor. Never use future event time, post-failure counters, recovery outcomes, cause_label, or drop_reason as predictors.
+
+EXACT COLLECTION PLAN AND EXPERIMENT MATRIX
+
+The existing simulator directly records mobility via MobilityModel position/velocity calls and application Tx/Rx callbacks. For missing measurements, inspect the exact ns-3 version's Wi-Fi PHY/MAC queue and DSR module trace sources before choosing callback/API names; the saved report says no public DSR route-trace interface was available. RSSI/SNR and retry data require version-specific PHY/MAC instrumentation or a justified derivation. Delay/jitter need timestamped per-packet observations; route labels need timestamped route/link failure events. Sample link/route state periodically (e.g. 1 s) and capture packet/routing events individually; assign run/scenario/node/link/route keys to all records.
+
+A practical proposal, not current configuration: keep 100-second runs, 500x500 m area, 802.11b ad hoc, 250 m range, DSR, 512-byte packets, and one flow from node 0 to node N-1. Vary node counts 100/150/300/500, speeds 1/5/10 m/s, traffic 2/10/50 kbps, and seeds 1-5. That is 180 matched scenario runs for baseline data collection. Comparing all four configured arms (baseline, RF, XGBoost, tuned) under each scenario would mean 720 executions. Pilot a smaller subset and check runtime before committing to the full matrix; current config only establishes 20 nodes, 5 m/s, 2 kbps, and seed/run 7/1.
+
+PRIORITY PHASE STATUS
+
+Phase 1. Dataset audit: [COMPLETED] Inventory, cleaning audits, registry, target and merge manifests exist.
+Phase 2. ns-3 instrumentation: [PARTIALLY COMPLETED] Aggregate metrics and mobility exist; prediction features/events do not.
+Phase 3. Real DSR data generation: [PARTIALLY COMPLETED] One baseline run; no repeated labeled DSR runs.
+Phase 4. Data cleaning: [COMPLETED] Mechanical cleaning/audits run on current sources.
+Phase 5. Feature engineering: [PARTIALLY COMPLETED] Per-source numerical features exist; not temporal DSR features.
+Phase 6. Label generation: [NOT STARTED] No real future-window route-failure labeler.
+Phase 7. Dataset validation: [PARTIALLY COMPLETED] Missing/duplicate/hash checks exist; semantic and identifier contradictions remain.
+Phase 8. RF/XGBoost training: [PARTIALLY COMPLETED] Models trained on smoke and other targets, not valid DSR labels.
+Phase 9. Unseen-run testing: [NOT STARTED] Current splits are row-level.
+Phase 10. DSR integration: [NOT STARTED] No prediction-to-routing/recovery code.
+Phase 11. End-to-end comparison: [NOT STARTED] Experiment IDs/metrics are configured, but no four-arm results exist.
+
+WHAT I NEED TO DO NEXT
+
+1. Freeze the independent source datasets as separate tasks; do not relabel or merge them into route_failure.
+2. Resolve packet-loss provenance and investigate the invalid seed behavior, endpoint/node-count mismatches, impossible neighbor counts, and repeated endpoints.
+3. Trace the origin and definitions of manet_dataset; resolve its all-zero counters and avg_rssi=-1000 values before using it.
+4. Inspect the installed ns-3 version's DSR, Wi-Fi PHY/MAC, queue, and packet trace surfaces; write down exactly which events can be captured.
+5. Extend the project DSR run to emit timestamped per-link/per-route features and route/link failure/recovery events with consistent scenario, seed, and entity IDs.
+6. Define the five-second label rule and generate labels only from future event timestamps; exclude post-event observations from features.
+7. Run a small multi-seed pilot and validate row keys, units, label counts, and feature timing.
+8. Replace row-level ML splits with grouped held-out runs/scenarios; evaluate RF/XGBoost on those real traces.
+9. Only after offline validation, implement and compare baseline DSR, RF, XGBoost, and tuned-model behavior using the configured network metrics.

@@ -1,0 +1,196 @@
+{
+  "script_version": "2.0.0",
+  "cleaning_timestamp_utc": "2026-09-27T16:36:21.306321+00:00",
+  "original_filename": "manet_dataset_cleaned.csv",
+  "input": "data/final/ml_link_failure/manet_dataset_cleaned.csv",
+  "output": "data/cleaned/link_failure/dataset_cleaned.csv",
+  "rows_before": 54000,
+  "rows_after": 54000,
+  "column_count": 12,
+  "original_columns": [
+    "run_id",
+    "time",
+    "node_id",
+    "x",
+    "y",
+    "neighbor_count",
+    "avg_rssi",
+    "tx_packets",
+    "rx_packets",
+    "lost_packets",
+    "delay_sum",
+    "link_failure"
+  ],
+  "final_columns": [
+    "run_id",
+    "time",
+    "node_id",
+    "x",
+    "y",
+    "neighbor_count",
+    "avg_rssi",
+    "tx_packets",
+    "rx_packets",
+    "lost_packets",
+    "delay_sum",
+    "link_failure"
+  ],
+  "renamed_columns": {
+    "run_id": "run_id",
+    "time": "time",
+    "node_id": "node_id",
+    "x": "x",
+    "y": "y",
+    "neighbor_count": "neighbor_count",
+    "avg_rssi": "avg_rssi",
+    "tx_packets": "tx_packets",
+    "rx_packets": "rx_packets",
+    "lost_packets": "lost_packets",
+    "delay_sum": "delay_sum",
+    "link_failure": "link_failure"
+  },
+  "duplicate_rows_detected": 0,
+  "duplicate_rows_removed": 0,
+  "missing_values_before": {
+    "run_id": 0,
+    "time": 0,
+    "node_id": 0,
+    "x": 0,
+    "y": 0,
+    "neighbor_count": 0,
+    "avg_rssi": 0,
+    "tx_packets": 0,
+    "rx_packets": 0,
+    "lost_packets": 0,
+    "delay_sum": 0,
+    "link_failure": 0
+  },
+  "missing_values_after": {
+    "run_id": 0,
+    "time": 0,
+    "node_id": 0,
+    "x": 0,
+    "y": 0,
+    "neighbor_count": 0,
+    "avg_rssi": 0,
+    "tx_packets": 0,
+    "rx_packets": 0,
+    "lost_packets": 0,
+    "delay_sum": 0,
+    "link_failure": 0
+  },
+  "non_finite_values": {},
+  "columns_converted_to_numeric": [],
+  "invalid_value_counts": {},
+  "outlier_counts_by_numeric_column": {
+    "run_id": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "time": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "node_id": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "x": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "y": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "neighbor_count": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "avg_rssi": {
+      "iqr_count_reported_not_removed": 3900
+    }
+  },
+  "target_column": "link_failure",
+  "target_columns": [
+    "link_failure"
+  ],
+  "target_distribution": {
+    "0": 42815,
+    "1": 11185
+  },
+  "target_validation": {
+    "link_failure": {
+      "binary_0_1": true,
+      "unique_values_sample": [
+        "0",
+        "1"
+      ],
+      "missing_values": 0,
+      "meaning": "Preserved source target column 'link_failure'; no relabeling was performed."
+    }
+  },
+  "columns_removed": {},
+  "cleaning_actions": [
+    "normalized column names",
+    "reported outliers and retained them"
+  ],
+  "status": "cleaned",
+  "run_name": "link_failure",
+  "feature_columns": [
+    "x",
+    "y",
+    "neighbor_count",
+    "avg_rssi",
+    "tx_packets",
+    "rx_packets",
+    "lost_packets",
+    "delay_sum",
+    "delivery_ratio_engineered",
+    "loss_ratio_engineered"
+  ],
+  "non_numeric_columns_excluded_from_features": [],
+  "leakage_columns_excluded_from_features": {},
+  "link_failure_counter_review": {
+    "checked_columns": [
+      "tx_packets",
+      "rx_packets",
+      "lost_packets",
+      "delay_sum"
+    ],
+    "counter_observations": {
+      "tx_packets": {
+        "nonzero_rows": 0,
+        "unique_values": 1
+      },
+      "rx_packets": {
+        "nonzero_rows": 0,
+        "unique_values": 1
+      },
+      "lost_packets": {
+        "nonzero_rows": 0,
+        "unique_values": 1
+      },
+      "delay_sum": {
+        "nonzero_rows": 0,
+        "unique_values": 1
+      }
+    },
+    "target_positive_rows": 11185,
+    "rows_with_lost_packets_gt_zero": 0,
+    "target_positive_rows_with_lost_packets_gt_zero": 0,
+    "target_zero_rows_with_lost_packets_gt_zero": 0,
+    "same_row_loss_implication_assessment": "not_assessable_no_rows_with_lost_packets_gt_zero",
+    "all_checked_counters_constant_zero": true,
+    "temporal_aggregation_semantics_confirmed_from_csv": false,
+    "interpretation": "All checked counters are constant zero, so there is no nonzero loss signal with which to test same-row implication. The CSV does not establish whether counters are cumulative, windowed, or timestamp-bounded; prediction-window semantics remain unverified. Treat this as link_failure classification only, not forecasting or route_failure evidence."
+  },
+  "selected_baseline": "xgboost_baseline",
+  "validation_f1": {
+    "random_forest": 0.6230308409141335,
+    "xgboost_baseline": 0.7149810708491077
+  },
+  "test_evaluation_models": [
+    "random_forest",
+    "xgboost_baseline",
+    "best_model_tuned"
+  ],
+  "class_balance": {
+    "0": 42815,
+    "1": 11185
+  }
+}

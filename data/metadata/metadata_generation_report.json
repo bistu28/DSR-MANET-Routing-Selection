@@ -1,0 +1,156 @@
+{
+  "total_configurations": 180,
+  "number_of_raw_csvs_inspected": 13,
+  "unique_node_counts": [
+    100,
+    150,
+    200,
+    300,
+    400,
+    500
+  ],
+  "unique_speeds": [
+    0.66,
+    1.55,
+    2.4
+  ],
+  "unique_mobility_levels": [
+    "HIGH",
+    "LOW",
+    "MEDIUM"
+  ],
+  "unique_traffic_rates": [
+    275692,
+    1606758
+  ],
+  "unique_traffic_levels": [
+    "HIGH",
+    "LOW"
+  ],
+  "unique_packet_sizes": [
+    405,
+    1136
+  ],
+  "unique_areas": [
+    200
+  ],
+  "unique_simulation_durations": [
+    600
+  ],
+  "unique_seeds": [
+    10001,
+    10002,
+    10003,
+    10004,
+    10005
+  ],
+  "raw_files_inspected": [
+    "manet_dataset.csv",
+    "nodes_dynamic.csv",
+    "packet_loss.csv",
+    "positions_100_run1.csv",
+    "positions_150n_seed1.csv",
+    "positions_150n_seed2.csv",
+    "positions_150n_seed3.csv",
+    "positions_150n_seed4.csv",
+    "positions_150n_seed5.csv",
+    "positions_200_run1.csv",
+    "positions_300_run1.csv",
+    "positions_400_run1.csv",
+    "positions_500_run1.csv"
+  ],
+  "observed_parameters": [
+    "node_count",
+    "sim_duration_s",
+    "sim_area_m",
+    "mobility_model",
+    "speed_mps",
+    "packet_size_bytes",
+    "pps",
+    "transport",
+    "app",
+    "routing",
+    "channel_helper",
+    "phy",
+    "tx_power_dbm",
+    "noise_floor_dbm"
+  ],
+  "derived_parameters": [
+    "mobility_level",
+    "traffic_level",
+    "packet_rate_pps",
+    "traffic_rate_bps",
+    "area_x_m",
+    "area_y_m"
+  ],
+  "generated_parameters": [
+    "scenario_id",
+    "random_seed",
+    "random_run",
+    "source_id",
+    "destination_id",
+    "flow_id",
+    "seed_source",
+    "endpoint_source",
+    "configuration_source",
+    "metadata_source",
+    "configuration_version"
+  ],
+  "default_parameters": [
+    "simulation_duration_s=600",
+    "area_m=200",
+    "routing_protocol=DSR",
+    "mobility_model=RandomWaypoint",
+    "channel_helper=YansWifiChannel",
+    "transport_protocol=UDP",
+    "application_type=CBR"
+  ],
+  "unavailable_parameters": [
+    "mobility_direction",
+    "min_speed_mps",
+    "max_speed_mps"
+  ],
+  "duplicate_count": 0,
+  "invalid_endpoint_count": 0,
+  "experiment_matrix": {
+    "node_count_levels": [
+      100,
+      150,
+      200,
+      300,
+      400,
+      500
+    ],
+    "mobility_levels": [
+      "LOW",
+      "MEDIUM",
+      "HIGH"
+    ],
+    "traffic_levels": [
+      "LOW",
+      "HIGH"
+    ],
+    "seeds_per_configuration": 5,
+    "total_runs": 180
+  },
+  "provenance_map": {
+    "data/raw/packet_loss.csv:node_count": "observed_raw -> node_count",
+    "data/raw/packet_loss.csv:sim_duration_s": "observed_raw -> simulation_duration_s",
+    "data/raw/packet_loss.csv:sim_area_m": "observed_raw -> area_m, area_x_m, area_y_m",
+    "data/raw/packet_loss.csv:mobility_model": "observed_raw -> mobility_model",
+    "data/raw/packet_loss.csv:speed_mps": "derived_from_raw -> mobility_level / speed_mps",
+    "data/raw/packet_loss.csv:packet_size_bytes": "derived_from_raw -> packet_size_bytes",
+    "data/raw/packet_loss.csv:pps": "derived_from_raw -> packet_rate_pps / traffic_level / traffic_rate_bps",
+    "data/raw/packet_loss.csv:transport": "observed_raw -> transport_protocol",
+    "data/raw/packet_loss.csv:app": "observed_raw -> application_type",
+    "data/raw/packet_loss.csv:routing": "observed_raw -> routing_protocol (filtered to DSR for final output)",
+    "data/raw/packet_loss.csv:channel_helper": "observed_raw -> channel_helper",
+    "data/raw/packet_loss.csv:phy": "observed_raw -> phy, wifi_standard",
+    "data/raw/packet_loss.csv:tx_power_dbm": "observed_raw -> tx_power_dbm",
+    "data/raw/packet_loss.csv:noise_floor_dbm": "observed_raw -> noise_floor_dbm",
+    "data/raw/positions_*.csv:node_id": "observed_raw -> valid node-count levels",
+    "deterministic_generated": "scenario_id, random_seed, random_run, flow_id, seed_source, endpoint_source, configuration_source",
+    "configured_default": "simulation_duration_s=600, area_m=200, routing_protocol=DSR, mobility_model=RandomWaypoint, tx_power_dbm=16.04, noise_floor_dbm=-95.02 when not otherwise resolved",
+    "unavailable": "mobility_direction, min_speed_mps, max_speed_mps"
+  }
+}

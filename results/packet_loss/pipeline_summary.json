@@ -1,0 +1,436 @@
+{
+  "script_version": "2.0.0",
+  "cleaning_timestamp_utc": "2026-09-27T16:36:41.441169+00:00",
+  "original_filename": "packet_loss_cleaned.csv",
+  "input": "data/final/ml_packet_loss/packet_loss_cleaned.csv",
+  "output": "data/cleaned/packet_loss/dataset_cleaned.csv",
+  "rows_before": 50000,
+  "rows_after": 50000,
+  "column_count": 46,
+  "original_columns": [
+    "sim_label",
+    "run_id",
+    "ns3_seed",
+    "sim_area_m",
+    "node_count",
+    "sim_duration_s",
+    "mobility_model",
+    "channel_helper",
+    "stack",
+    "routing",
+    "timestamp",
+    "src_id",
+    "dst_id",
+    "flow_id",
+    "transport",
+    "app",
+    "ttl_hops",
+    "packet_size_bytes",
+    "pps",
+    "phy",
+    "tx_power_dbm",
+    "noise_floor_dbm",
+    "rssi_dbm",
+    "snr_db",
+    "neighbor_count",
+    "speed_mps",
+    "channel_busy_ratio",
+    "queue_len_norm",
+    "link_changes_per_s",
+    "collisions",
+    "mac_retries",
+    "backoff_slots",
+    "prr",
+    "etx",
+    "delay_ms",
+    "jitter_ms",
+    "pm",
+    "pq",
+    "peta",
+    "mac_tx_attempts",
+    "mac_tx_success",
+    "rx_success",
+    "queue_drops",
+    "cause_label",
+    "loss_occurred",
+    "drop_reason"
+  ],
+  "final_columns": [
+    "sim_label",
+    "run_id",
+    "ns3_seed",
+    "sim_area_m",
+    "node_count",
+    "sim_duration_s",
+    "mobility_model",
+    "channel_helper",
+    "stack",
+    "routing",
+    "timestamp",
+    "src_id",
+    "dst_id",
+    "flow_id",
+    "transport",
+    "app",
+    "ttl_hops",
+    "packet_size_bytes",
+    "pps",
+    "phy",
+    "tx_power_dbm",
+    "noise_floor_dbm",
+    "rssi_dbm",
+    "snr_db",
+    "neighbor_count",
+    "speed_mps",
+    "channel_busy_ratio",
+    "queue_len_norm",
+    "link_changes_per_s",
+    "collisions",
+    "mac_retries",
+    "backoff_slots",
+    "prr",
+    "etx",
+    "delay_ms",
+    "jitter_ms",
+    "pm",
+    "pq",
+    "peta",
+    "mac_tx_attempts",
+    "mac_tx_success",
+    "rx_success",
+    "queue_drops",
+    "cause_label",
+    "loss_occurred",
+    "drop_reason"
+  ],
+  "renamed_columns": {
+    "sim_label": "sim_label",
+    "run_id": "run_id",
+    "ns3_seed": "ns3_seed",
+    "sim_area_m": "sim_area_m",
+    "node_count": "node_count",
+    "sim_duration_s": "sim_duration_s",
+    "mobility_model": "mobility_model",
+    "channel_helper": "channel_helper",
+    "stack": "stack",
+    "routing": "routing",
+    "timestamp": "timestamp",
+    "src_id": "src_id",
+    "dst_id": "dst_id",
+    "flow_id": "flow_id",
+    "transport": "transport",
+    "app": "app",
+    "ttl_hops": "ttl_hops",
+    "packet_size_bytes": "packet_size_bytes",
+    "pps": "pps",
+    "phy": "phy",
+    "tx_power_dbm": "tx_power_dbm",
+    "noise_floor_dbm": "noise_floor_dbm",
+    "rssi_dbm": "rssi_dbm",
+    "snr_db": "snr_db",
+    "neighbor_count": "neighbor_count",
+    "speed_mps": "speed_mps",
+    "channel_busy_ratio": "channel_busy_ratio",
+    "queue_len_norm": "queue_len_norm",
+    "link_changes_per_s": "link_changes_per_s",
+    "collisions": "collisions",
+    "mac_retries": "mac_retries",
+    "backoff_slots": "backoff_slots",
+    "prr": "prr",
+    "etx": "etx",
+    "delay_ms": "delay_ms",
+    "jitter_ms": "jitter_ms",
+    "pm": "pm",
+    "pq": "pq",
+    "peta": "peta",
+    "mac_tx_attempts": "mac_tx_attempts",
+    "mac_tx_success": "mac_tx_success",
+    "rx_success": "rx_success",
+    "queue_drops": "queue_drops",
+    "cause_label": "cause_label",
+    "loss_occurred": "loss_occurred",
+    "drop_reason": "drop_reason"
+  },
+  "duplicate_rows_detected": 0,
+  "duplicate_rows_removed": 0,
+  "missing_values_before": {
+    "sim_label": 0,
+    "run_id": 0,
+    "ns3_seed": 0,
+    "sim_area_m": 0,
+    "node_count": 0,
+    "sim_duration_s": 0,
+    "mobility_model": 0,
+    "channel_helper": 0,
+    "stack": 0,
+    "routing": 0,
+    "timestamp": 0,
+    "src_id": 0,
+    "dst_id": 0,
+    "flow_id": 0,
+    "transport": 0,
+    "app": 0,
+    "ttl_hops": 0,
+    "packet_size_bytes": 0,
+    "pps": 0,
+    "phy": 0,
+    "tx_power_dbm": 0,
+    "noise_floor_dbm": 0,
+    "rssi_dbm": 0,
+    "snr_db": 0,
+    "neighbor_count": 0,
+    "speed_mps": 0,
+    "channel_busy_ratio": 0,
+    "queue_len_norm": 0,
+    "link_changes_per_s": 0,
+    "collisions": 0,
+    "mac_retries": 0,
+    "backoff_slots": 0,
+    "prr": 0,
+    "etx": 0,
+    "delay_ms": 0,
+    "jitter_ms": 0,
+    "pm": 0,
+    "pq": 0,
+    "peta": 0,
+    "mac_tx_attempts": 0,
+    "mac_tx_success": 0,
+    "rx_success": 0,
+    "queue_drops": 0,
+    "cause_label": 0,
+    "loss_occurred": 0,
+    "drop_reason": 0
+  },
+  "missing_values_after": {
+    "sim_label": 0,
+    "run_id": 0,
+    "ns3_seed": 0,
+    "sim_area_m": 0,
+    "node_count": 0,
+    "sim_duration_s": 0,
+    "mobility_model": 0,
+    "channel_helper": 0,
+    "stack": 0,
+    "routing": 0,
+    "timestamp": 0,
+    "src_id": 0,
+    "dst_id": 0,
+    "flow_id": 0,
+    "transport": 0,
+    "app": 0,
+    "ttl_hops": 0,
+    "packet_size_bytes": 0,
+    "pps": 0,
+    "phy": 0,
+    "tx_power_dbm": 0,
+    "noise_floor_dbm": 0,
+    "rssi_dbm": 0,
+    "snr_db": 0,
+    "neighbor_count": 0,
+    "speed_mps": 0,
+    "channel_busy_ratio": 0,
+    "queue_len_norm": 0,
+    "link_changes_per_s": 0,
+    "collisions": 0,
+    "mac_retries": 0,
+    "backoff_slots": 0,
+    "prr": 0,
+    "etx": 0,
+    "delay_ms": 0,
+    "jitter_ms": 0,
+    "pm": 0,
+    "pq": 0,
+    "peta": 0,
+    "mac_tx_attempts": 0,
+    "mac_tx_success": 0,
+    "rx_success": 0,
+    "queue_drops": 0,
+    "cause_label": 0,
+    "loss_occurred": 0,
+    "drop_reason": 0
+  },
+  "non_finite_values": {},
+  "columns_converted_to_numeric": [],
+  "invalid_value_counts": {},
+  "outlier_counts_by_numeric_column": {
+    "run_id": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "ns3_seed": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "node_count": {
+      "iqr_count_reported_not_removed": 12495
+    },
+    "sim_duration_s": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "src_id": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "dst_id": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "flow_id": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "ttl_hops": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "packet_size_bytes": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "pps": {
+      "iqr_count_reported_not_removed": 1590
+    },
+    "tx_power_dbm": {
+      "iqr_count_reported_not_removed": 9985
+    },
+    "noise_floor_dbm": {
+      "iqr_count_reported_not_removed": 633
+    },
+    "rssi_dbm": {
+      "iqr_count_reported_not_removed": 93
+    },
+    "snr_db": {
+      "iqr_count_reported_not_removed": 161
+    },
+    "neighbor_count": {
+      "iqr_count_reported_not_removed": 4523
+    },
+    "speed_mps": {
+      "iqr_count_reported_not_removed": 57
+    },
+    "channel_busy_ratio": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "queue_len_norm": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "link_changes_per_s": {
+      "iqr_count_reported_not_removed": 6909
+    },
+    "collisions": {
+      "iqr_count_reported_not_removed": 747
+    },
+    "mac_retries": {
+      "iqr_count_reported_not_removed": 204
+    },
+    "backoff_slots": {
+      "iqr_count_reported_not_removed": 571
+    },
+    "prr": {
+      "iqr_count_reported_not_removed": 1066
+    },
+    "etx": {
+      "iqr_count_reported_not_removed": 1618
+    },
+    "delay_ms": {
+      "iqr_count_reported_not_removed": 1607
+    },
+    "jitter_ms": {
+      "iqr_count_reported_not_removed": 314
+    },
+    "pm": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "pq": {
+      "iqr_count_reported_not_removed": 0
+    },
+    "peta": {
+      "iqr_count_reported_not_removed": 6916
+    },
+    "mac_tx_attempts": {
+      "iqr_count_reported_not_removed": 1739
+    },
+    "mac_tx_success": {
+      "iqr_count_reported_not_removed": 1313
+    },
+    "rx_success": {
+      "iqr_count_reported_not_removed": 1031
+    }
+  },
+  "target_column": "loss_occurred",
+  "target_columns": [
+    "loss_occurred"
+  ],
+  "target_distribution": {
+    "0": 39246,
+    "1": 10754
+  },
+  "target_validation": {
+    "loss_occurred": {
+      "binary_0_1": true,
+      "unique_values_sample": [
+        "0",
+        "1"
+      ],
+      "missing_values": 0,
+      "meaning": "Preserved source target column 'loss_occurred'; no relabeling was performed."
+    }
+  },
+  "columns_removed": {},
+  "cleaning_actions": [
+    "normalized column names",
+    "reported outliers and retained them"
+  ],
+  "status": "cleaned",
+  "run_name": "packet_loss",
+  "feature_columns": [
+    "ttl_hops",
+    "packet_size_bytes",
+    "pps",
+    "tx_power_dbm",
+    "noise_floor_dbm",
+    "rssi_dbm",
+    "snr_db",
+    "neighbor_count",
+    "speed_mps",
+    "channel_busy_ratio",
+    "queue_len_norm",
+    "link_changes_per_s",
+    "collisions",
+    "mac_retries",
+    "backoff_slots",
+    "prr",
+    "etx",
+    "delay_ms",
+    "jitter_ms",
+    "pm",
+    "pq",
+    "peta",
+    "mac_tx_attempts",
+    "mac_tx_success",
+    "rx_success",
+    "queue_drops"
+  ],
+  "non_numeric_columns_excluded_from_features": [],
+  "leakage_columns_excluded_from_features": {
+    "cause_label": {
+      "reason": "Describes the cause of the observed packet loss; unavailable before the labeled outcome.",
+      "observed_dtype": "object",
+      "also_non_numeric": true,
+      "excluded_by_explicit_leakage_rule": true
+    },
+    "drop_reason": {
+      "reason": "Describes why the packet was dropped; outcome-derived and unavailable before the labeled outcome.",
+      "observed_dtype": "object",
+      "also_non_numeric": true,
+      "excluded_by_explicit_leakage_rule": true
+    }
+  },
+  "selected_baseline": "xgboost_baseline",
+  "validation_f1": {
+    "random_forest": 0.6325381935138032,
+    "xgboost_baseline": 0.9056224899598394
+  },
+  "test_evaluation_models": [
+    "random_forest",
+    "xgboost_baseline",
+    "best_model_tuned"
+  ],
+  "class_balance": {
+    "0": 39246,
+    "1": 10754
+  }
+}
