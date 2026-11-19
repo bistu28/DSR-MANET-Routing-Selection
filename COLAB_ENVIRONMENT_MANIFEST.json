@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "status": "UNVERIFIED",
+  "last_known_status": "FAILED_PRECHECK",
+  "latest_reported_attempt": {
+    "reported_at": "2026-11-19T15:01:39+05:30",
+    "reported_by_user": true,
+    "evidence_available": false
+  },
+  "target": {
+    "ns3_version": "ns-3.48",
+    "ns3_source_commit": "d2add90b452d600cfb4859baed8e9ea633519447",
+    "instrumentation_patch_sha256": "931131e837a4e305ee42f664865311e95003f65a526954d1af2ea0b50ea30922"
+  },
+  "runtime": {
+    "source": "User-provided Colab notebook execution snapshot",
+    "python": "3.13.18",
+    "environment_setup_started": false
+  },
+  "dependencies": null,
+  "build_configuration": {
+    "configure_args": [
+      "--enable-examples",
+      "--enable-tests",
+      "--",
+      "-DNS3_WARNINGS_AS_ERRORS=OFF"
+    ],
+    "build_fingerprint": null,
+    "build_status": "NOT_RUN"
+  },
+  "last_verification_date": "2026-11-19",
+  "readiness": "BLOCKED",
+  "blockers": [
+    "The attached output.json is an empty array and the attached notebook snapshot contains no executed code-cell outputs.",
+    "No generated COLAB_ENVIRONMENT_MANIFEST.json was found in the linked local Drive project mirror at inspection time; mirror synchronization may lag.",
+    "The browser active-use guard prevented inspecting the current Colab or Drive UI directly.",
+    "NS-3.48 build, instrumentation verification, and runtime dependencies therefore remain unverified."
+  ]
+}

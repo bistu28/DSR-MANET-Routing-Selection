@@ -1,0 +1,429 @@
+diff --git a/src/dsr/model/dsr-options.cc b/src/dsr/model/dsr-options.cc
+index 832f52f..4d81ac5 100644
+--- a/src/dsr/model/dsr-options.cc
++++ b/src/dsr/model/dsr-options.cc
+@@ -24,6 +24,7 @@
+     }
+ 
+ #include "dsr-options.h"
++#include "stage2-dsr-event-sink.h"
+ 
+ #include "dsr-option-header.h"
+ #include "dsr-rcache.h"
+@@ -571,6 +572,7 @@ DsrOptionRreq::Process(Ptr<Packet> packet,
+     // Get the real source address of this request, it will be used when checking if we have
+     // received the save route request before or not
+     Ipv4Address sourceAddress = nodeList.front();
++    { std::vector<uint32_t> ids; for (auto address : nodeList) ids.push_back(GetIDfromIP(address)); stage2::EventSink::Emit("rreq_rx", node->GetId(), GetIDfromIP(sourceAddress), GetIDfromIP(targetAddress), "DsrOptionRreq::Process", "src/dsr/model/dsr-options.cc", ids, -1, {}, packet->GetUid()); }
+     PrintVector(nodeList);
+     /*
+      * Construct the dsr routing header for later use
+@@ -603,6 +605,7 @@ DsrOptionRreq::Process(Ptr<Packet> packet,
+ 
+     if (dupRequest)
+     {
++        stage2::EventSink::Emit("rreq_duplicate_suppressed", node->GetId(), GetIDfromIP(sourceAddress), GetIDfromIP(targetAddress), "DsrOptionRreq::Process.duplicate-key-check", "src/dsr/model/dsr-options.cc", {}, -1, {}, packet->GetUid());
+         // We have received this same route request before, not forwarding it now
+         NS_LOG_LOGIC("Duplicate request. Drop!");
+         m_dropTrace(packet); // call drop trace
+@@ -691,6 +694,7 @@ DsrOptionRreq::Process(Ptr<Packet> packet,
+             dsrRoutingHeader.AddDsrOption(rrep);
+             Ptr<Packet> newPacket = Create<Packet>();
+             newPacket->AddHeader(dsrRoutingHeader);
++            { std::vector<uint32_t> ids; for (auto address : m_finalRoute) ids.push_back(GetIDfromIP(address)); stage2::EventSink::Emit("rrep_generated", node->GetId(), GetIDfromIP(sourceAddress), GetIDfromIP(targetAddress), "DsrOptionRreq::Process.destination-reply", "src/dsr/model/dsr-options.cc", ids, -1, {}, newPacket->GetUid()); }
+             dsr->ScheduleInitialReply(newPacket, ipv4Address, nextHop, m_ipv4Route);
+             /*
+              * Create the route entry to the rreq originator and save it to route cache, also need
+@@ -981,6 +985,7 @@ DsrOptionRreq::Process(Ptr<Packet> packet,
+                 tag.SetTtl(ttl - 1);
+                 interP->AddPacketTag(tag);
+                 interP->AddHeader(dsrRoutingHeader);
++                { std::vector<uint32_t> ids; for (auto address : nodeList) ids.push_back(GetIDfromIP(address)); stage2::EventSink::Emit("rreq_forwarded", node->GetId(), GetIDfromIP(sourceAddress), GetIDfromIP(targetAddress), "DsrOptionRreq::Process.ScheduleInterRequest", "src/dsr/model/dsr-options.cc", ids, -1, {}, interP->GetUid()); }
+                 dsr->ScheduleInterRequest(interP);
+                 isPromisc = false;
+             }
+@@ -1055,6 +1060,7 @@ DsrOptionRrep::Process(Ptr<Packet> packet,
+      * Get the destination address, which is the last element in the nodeList
+      */
+     Ipv4Address targetAddress = nodeList.front();
++    { std::vector<uint32_t> ids; for (auto address : nodeList) ids.push_back(GetIDfromIP(address)); stage2::EventSink::Emit("rrep_rx", node->GetId(), GetIDfromIP(nodeList.back()), GetIDfromIP(targetAddress), "DsrOptionRrep::Process", "src/dsr/model/dsr-options.cc", ids, -1, {}, packet->GetUid()); }
+     // If the RREP option has reached to the destination
+     if (targetAddress == ipv4Address)
+     {
+@@ -1111,6 +1117,7 @@ DsrOptionRrep::Process(Ptr<Packet> packet,
+             }
+             PrintVector(nodeList);
+             SetRoute(nextHop, ipv4Address);
++            { std::vector<uint32_t> ids; for (auto address : nodeList) ids.push_back(GetIDfromIP(address)); stage2::EventSink::Emit("route_discovery_completed", node->GetId(), GetIDfromIP(dst), GetIDfromIP(ipv4Address), "DsrOptionRrep::Process.destination-cache-update", "src/dsr/model/dsr-options.cc", ids, -1, {}, packet->GetUid()); stage2::EventSink::Emit("route_selected", node->GetId(), GetIDfromIP(dst), GetIDfromIP(ipv4Address), "DsrOptionRrep::Process.selected-discovery-route", "src/dsr/model/dsr-options.cc", ids, -1, {}, packet->GetUid()); }
+             // Cancel the route request timer for destination
+             dsr->CancelRreqTimer(dst, true);
+             /**
+@@ -1201,6 +1208,7 @@ DsrOptionRrep::Process(Ptr<Packet> packet,
+         dsrRoutingHeader.AddDsrOption(rrep);
+         Ptr<Packet> newPacket = Create<Packet>();
+         newPacket->AddHeader(dsrRoutingHeader);
++        { std::vector<uint32_t> ids; for (auto address : routeCopy) ids.push_back(GetIDfromIP(address)); stage2::EventSink::Emit("rrep_forwarded", node->GetId(), GetIDfromIP(routeCopy.back()), GetIDfromIP(routeCopy.front()), "DsrOptionRrep::Process.intermediate-forward", "src/dsr/model/dsr-options.cc", ids, GetIDfromIP(nextHop), {}, newPacket->GetUid()); }
+         dsr->SendReply(newPacket, ipv4Address, nextHop, m_ipv4Route);
+         isPromisc = false;
+     }
+@@ -1543,6 +1551,7 @@ DsrOptionRerr::Process(Ptr<Packet> packet,
+          */
+         Ipv4Address unreachAddress = rerrUnreach.GetUnreachNode();
+         Ipv4Address errorSource = rerrUnreach.GetErrorSrc();
++        stage2::EventSink::Emit("rerr_rx", node->GetId(), GetIDfromIP(errorSource), GetIDfromIP(unreachAddress), "DsrOptionRerr::Process.unreachable", "src/dsr/model/dsr-options.cc", {}, GetIDfromIP(unreachAddress), "unreachable_link_reported_by_DSR", packet->GetUid());
+ 
+         NS_LOG_DEBUG("The error source is " << rerrUnreach.GetErrorDst()
+                                             << "and the unreachable node is " << unreachAddress);
+@@ -1662,6 +1671,7 @@ DsrOptionRerr::DoSendError(Ptr<Packet> p,
+ 
+     // Set the route entry
+     SetRoute(nextAddress, ipv4Address);
++    { auto addresses = newSourceRoute.GetNodesAddress(); std::vector<uint32_t> ids; for (auto address : addresses) ids.push_back(GetIDfromIP(address)); stage2::EventSink::Emit("rerr_forwarded", node->GetId(), GetIDfromIP(rerr.GetErrorSrc()), GetIDfromIP(rerr.GetUnreachNode()), "DsrOptionRerr::DoSendError", "src/dsr/model/dsr-options.cc", ids, GetIDfromIP(nextAddress)); }
+     dsr->ForwardErrPacket(rerr, newSourceRoute, nextAddress, protocol, m_ipv4Route);
+     return serializedSize;
+ }
+diff --git a/src/dsr/model/dsr-rcache.cc b/src/dsr/model/dsr-rcache.cc
+index 99b4b05..8d799d4 100644
+--- a/src/dsr/model/dsr-rcache.cc
++++ b/src/dsr/model/dsr-rcache.cc
+@@ -20,6 +20,7 @@
+  */
+ 
+ #include "dsr-rcache.h"
++#include "stage2-dsr-event-sink.h"
+ 
+ #include "ns3/address-utils.h"
+ #include "ns3/ipv4-route.h"
+@@ -153,6 +154,20 @@ DsrRouteCacheEntry::Print(std::ostream& os) const
+ 
+ NS_OBJECT_ENSURE_REGISTERED(DsrRouteCache);
+ 
++namespace
++{
++void EmitCacheEvent(uint32_t nodeId, const char* type, const char* hook,
++                    Ipv4Address destination, const DsrRouteCacheEntry::IP_VECTOR& route = {},
++                    Ipv4Address neighbor = Ipv4Address::GetZero())
++{
++    if (nodeId == std::numeric_limits<uint32_t>::max()) { return; }
++    auto ids = stage2::EventSink::NodeIdsForRoute(route);
++    stage2::EventSink::Emit(type, nodeId, -1, stage2::EventSink::NodeIdForAddress(destination),
++                            hook, "src/dsr/model/dsr-rcache.cc", ids,
++                            neighbor == Ipv4Address::GetZero() ? -1 : stage2::EventSink::NodeIdForAddress(neighbor));
++}
++}
++
+ TypeId
+ DsrRouteCache::GetTypeId()
+ {
+@@ -215,6 +230,7 @@ DsrRouteCache::UpdateRouteEntry(Ipv4Address dst)
+          * Save the new route cache along with the destination address in map
+          */
+         auto result = m_sortedRoutes.insert(std::make_pair(dst, rtVector));
++        if (result.second) { EmitCacheEvent(m_instrumentationNodeId, "route_cache_update", "DsrRouteCache::UpdateRouteEntry", dst, successEntry.GetVector()); }
+         return result.second;
+     }
+     return false;
+@@ -224,15 +240,23 @@ bool
+ DsrRouteCache::LookupRoute(Ipv4Address id, DsrRouteCacheEntry& rt)
+ {
+     NS_LOG_FUNCTION(this << id);
++    auto recordLookup = [&](bool found) {
++        DsrRouteCacheEntry::IP_VECTOR route;
++        if (found) { route = rt.GetVector(); }
++        EmitCacheEvent(m_instrumentationNodeId, found ? "route_cache_hit" : "route_cache_miss", "DsrRouteCache::LookupRoute", id, route);
++    };
+     if (IsLinkCache())
+     {
+-        return LookupRoute_Link(id, rt);
++        const bool found = LookupRoute_Link(id, rt);
++        recordLookup(found);
++        return found;
+     }
+ 
+     Purge(); // Purge first to remove expired entries
+     if (m_sortedRoutes.empty())
+     {
+         NS_LOG_LOGIC("Route to " << id << " not found; m_sortedRoutes is empty");
++        recordLookup(false);
+         return false;
+     }
+     auto i = m_sortedRoutes.find(id);
+@@ -288,6 +312,7 @@ DsrRouteCache::LookupRoute(Ipv4Address id, DsrRouteCacheEntry& rt)
+     if (m == m_sortedRoutes.end())
+     {
+         NS_LOG_LOGIC("No updated route till last time");
++        recordLookup(false);
+         return false;
+     }
+     /*
+@@ -296,6 +321,7 @@ DsrRouteCache::LookupRoute(Ipv4Address id, DsrRouteCacheEntry& rt)
+     std::list<DsrRouteCacheEntry> rtVector = m->second;
+     rt = rtVector.front(); // use the first entry in the route vector
+     NS_LOG_LOGIC("Route to " << id << " with route size " << rtVector.size());
++    recordLookup(true);
+     return true;
+ }
+ 
+@@ -478,6 +504,7 @@ DsrRouteCache::PurgeLinkNode()
+         auto itmp = i;
+         if (i->second.GetLinkStability().IsNegative())
+         {
++            EmitCacheEvent(m_instrumentationNodeId, "link_cache_expired", "DsrRouteCache::PurgeLinkNode", itmp->first.m_high, {itmp->first.m_low, itmp->first.m_high});
+             ++i;
+             m_linkCache.erase(itmp);
+         }
+@@ -614,6 +641,7 @@ DsrRouteCache::AddRoute_Link(DsrRouteCacheEntry::IP_VECTOR nodelist, Ipv4Address
+     }
+     UpdateNetGraph();
+     RebuildBestRouteTable(source);
++    EmitCacheEvent(m_instrumentationNodeId, "link_cache_add", "DsrRouteCache::AddRoute_Link", nodelist.back(), nodelist);
+     return true;
+ }
+ 
+@@ -684,6 +712,7 @@ DsrRouteCache::AddRoute(DsrRouteCacheEntry& rt)
+          * Save the new route cache along with the destination address in map
+          */
+         auto result = m_sortedRoutes.insert(std::make_pair(dst, rtVector));
++        if (result.second) { EmitCacheEvent(m_instrumentationNodeId, "route_cache_add", "DsrRouteCache::AddRoute", dst, route); }
+         return result.second;
+     }
+ 
+@@ -725,6 +754,7 @@ DsrRouteCache::AddRoute(DsrRouteCacheEntry& rt)
+              * Save the new route cache along with the destination address in map
+              */
+             auto result = m_sortedRoutes.insert(std::make_pair(dst, rtVector));
++            if (result.second) { EmitCacheEvent(m_instrumentationNodeId, "route_cache_add", "DsrRouteCache::AddRoute", dst, route); }
+             return result.second;
+         }
+         else
+@@ -757,6 +787,7 @@ DsrRouteCache::FindSameRoute(DsrRouteCacheEntry& rt, std::list<DsrRouteCacheEntr
+             {
+                 i->SetExpireTime(rt.GetExpireTime());
+             }
++            EmitCacheEvent(m_instrumentationNodeId, "route_cache_update", "DsrRouteCache::FindSameRoute", rt.GetDestination(), newVector);
+             m_sortedRoutes.erase(rt.GetDestination()); // erase the entry first
+             rtVector.sort(CompareRoutesExpire);        // sort the route vector first
+             /*
+@@ -776,6 +807,7 @@ DsrRouteCache::DeleteRoute(Ipv4Address dst)
+     Purge(); // purge the route cache first to remove timeout entries
+     if (m_sortedRoutes.erase(dst) != 0)
+     {
++        EmitCacheEvent(m_instrumentationNodeId, "route_cache_remove", "DsrRouteCache::DeleteRoute", dst);
+         NS_LOG_LOGIC("Route deletion to " << dst << " successful");
+         return true;
+     }
+@@ -799,6 +831,7 @@ DsrRouteCache::DeleteAllRoutesIncludeLink(Ipv4Address errorSrc,
+          */
+         Link link1(errorSrc, unreachNode);
+         Link link2(unreachNode, errorSrc);
++        EmitCacheEvent(m_instrumentationNodeId, "route_cache_invalidated", "DsrRouteCache::DeleteAllRoutesIncludeLink", errorSrc, {errorSrc, unreachNode}, unreachNode);
+         // erase the two kind of links to make sure the link is removed from the link cache
+         NS_LOG_DEBUG("Erase the route");
+         m_linkCache.erase(link1);
+@@ -1011,6 +1044,7 @@ DsrRouteCache::Purge()
+                      */
+                     NS_LOG_DEBUG("Erase the expired route for " << dst << " with expire time "
+                                                                 << j->GetExpireTime());
++                    EmitCacheEvent(m_instrumentationNodeId, "route_cache_expired", "DsrRouteCache::Purge", dst, j->GetVector());
+                     j = rtVector.erase(j);
+                 }
+                 else
+diff --git a/src/dsr/model/dsr-rcache.h b/src/dsr/model/dsr-rcache.h
+index 8a9056b..27cb920 100644
+--- a/src/dsr/model/dsr-rcache.h
++++ b/src/dsr/model/dsr-rcache.h
+@@ -829,6 +829,7 @@ class DsrRouteCache : public Object
+      * @return true if the link is cached
+      */
+     bool IsLinkCache();
++    void SetInstrumentationNodeId(uint32_t nodeId) { m_instrumentationNodeId = nodeId; }
+     /**
+      * @brief dd route link to cache
+      * @param nodelist vector of nodes
+@@ -883,6 +884,7 @@ class DsrRouteCache : public Object
+     /// Process layer 2 TX error notification
+     /// @param hdr Wi-Fi Mac Header
+     void ProcessTxError(const WifiMacHeader& hdr);
++    uint32_t m_instrumentationNodeId{std::numeric_limits<uint32_t>::max()}; ///< node ID for logs
+ };
+ } // namespace dsr
+ } // namespace ns3
+diff --git a/src/dsr/model/dsr-routing.cc b/src/dsr/model/dsr-routing.cc
+index 608f6d0..1382865 100644
+--- a/src/dsr/model/dsr-routing.cc
++++ b/src/dsr/model/dsr-routing.cc
+@@ -29,6 +29,7 @@
+ #include "dsr-options.h"
+ #include "dsr-rcache.h"
+ #include "dsr-rreq-table.h"
++#include "stage2-dsr-event-sink.h"
+ 
+ #include "ns3/adhoc-wifi-mac.h"
+ #include "ns3/arp-header.h"
+@@ -404,6 +405,7 @@ DsrRouting::NotifyNewAggregate()
+             if (m_ipv4)
+             {
+                 this->SetNode(node);
++                if (m_routeCache) { m_routeCache->SetInstrumentationNodeId(node->GetId()); }
+                 m_ipv4->Insert(this);
+                 this->SetDownTarget(MakeCallback(&Ipv4L3Protocol::Send, m_ipv4));
+             }
+@@ -424,6 +426,11 @@ DsrRouting::Start()
+ {
+     NS_LOG_FUNCTION(this << "Start DSR Routing protocol");
+ 
++    if (!m_priorityQueue.empty())
++    {
++        return;
++    }
++
+     NS_LOG_INFO("The number of network queues " << m_numPriorityQueues);
+     for (uint32_t i = 0; i < m_numPriorityQueues; i++)
+     {
+@@ -593,6 +600,7 @@ DsrRouting::SetRouteCache(Ptr<dsr::DsrRouteCache> r)
+ {
+     // / Set the route cache to use
+     m_routeCache = r;
++    if (m_routeCache && m_node) { m_routeCache->SetInstrumentationNodeId(m_node->GetId()); }
+ }
+ 
+ Ptr<dsr::DsrRouteCache>
+@@ -1339,6 +1347,7 @@ DsrRouting::SendUnreachError(Ipv4Address unreachNode,
+ {
+     NS_LOG_FUNCTION(this << unreachNode << destination << originalDst << (uint32_t)salvage
+                          << (uint32_t)protocol);
++    stage2::EventSink::Emit("rerr_generated", GetIDfromIP(m_mainAddress), GetIDfromIP(m_mainAddress), GetIDfromIP(originalDst), "DsrRouting::SendUnreachError", "src/dsr/model/dsr-routing.cc", {}, GetIDfromIP(unreachNode), "unreachable_next_hop");
+     DsrRoutingHeader dsrRoutingHeader;
+     dsrRoutingHeader.SetNextHeader(protocol);
+     dsrRoutingHeader.SetMessageType(1);
+@@ -1863,6 +1872,40 @@ DsrRouting::SendRealDown(DsrNetworkQueueEntry& newEntry)
+     Ipv4Address nextHop = newEntry.GetNextHopAddress();
+     Ptr<Packet> packet = newEntry.GetPacket()->Copy();
+     Ptr<Ipv4Route> route = newEntry.GetIpv4Route();
++    Ptr<Packet> headerCopy = packet->Copy();
++    DsrRoutingHeader dsrHeader;
++    if (headerCopy->RemoveHeader(dsrHeader) != 0 && dsrHeader.GetMessageType() == 2)
++    {
++        auto recovery = m_stage2RecoveryStarts.find(dsrHeader.GetDestId());
++        if (recovery != m_stage2RecoveryStarts.end())
++        {
++            const int64_t duration = static_cast<int64_t>(Simulator::Now().GetNanoSeconds() - recovery->second);
++            stage2::EventSink::Emit("recovery_succeeded", GetIDfromIP(m_mainAddress), dsrHeader.GetSourceId(), dsrHeader.GetDestId(), "DsrRouting::SendRealDown.repaired-data-transmission", "src/dsr/model/dsr-routing.cc", {}, -1, "forwarding_resumed_after_route_error", packet->GetUid(), -1, duration);
++            m_stage2RecoveryStarts.erase(recovery);
++        }
++    }
++    else if (dsrHeader.GetMessageType() == 1)
++    {
++        Buffer options = dsrHeader.GetDsrOptionBuffer();
++        Buffer::Iterator it = options.Begin();
++        std::vector<uint8_t> optionTypes;
++        while (it.GetRemainingSize() >= 2)
++        {
++            uint8_t type = it.ReadU8();
++            uint8_t length = it.ReadU8();
++            if (length > it.GetRemainingSize()) { break; }
++            if (type == 1 || type == 2 || type == 3) { optionTypes.push_back(type); }
++            it.Next(length);
++        }
++        for (uint8_t option : optionTypes)
++        {
++            const char* eventType = option == 1 ? "rreq_tx" : (option == 2 ? "rrep_tx" : "rerr_tx");
++            stage2::EventSink::Emit(eventType, GetIDfromIP(m_mainAddress), dsrHeader.GetSourceId(),
++                                    dsrHeader.GetDestId() == 255 ? -1 : dsrHeader.GetDestId(),
++                                    "DsrRouting::SendRealDown", "src/dsr/model/dsr-routing.cc",
++                                    {}, GetIDfromIP(nextHop) >= 256 ? -1 : GetIDfromIP(nextHop), {}, packet->GetUid());
++        }
++    }
+     m_downTarget(packet, source, nextHop, GetProtocolNumber(), route);
+     return true;
+ }
+@@ -2730,11 +2773,14 @@ DsrRouting::LinkScheduleTimerExpire(DsrMaintainBuffEntry& mb, uint8_t protocol)
+     m_linkRetries = m_linkCnt[lk];
+     if (m_linkRetries < m_tryLinkAcks)
+     {
++        stage2::EventSink::Emit("maintenance_attempt", GetIDfromIP(m_mainAddress), GetIDfromIP(mb.GetSrc()), GetIDfromIP(mb.GetDst()), "DsrRouting::LinkScheduleTimerExpire.retry", "src/dsr/model/dsr-routing.cc", {}, GetIDfromIP(nextHop), "link_ack_retry");
+         m_linkCnt[lk] = ++m_linkRetries;
+         ScheduleLinkPacketRetry(mb, protocol);
+     }
+     else
+     {
++        stage2::EventSink::Emit("broken_link_declared", GetIDfromIP(m_mainAddress), GetIDfromIP(mb.GetSrc()), GetIDfromIP(mb.GetDst()), "DsrRouting::LinkScheduleTimerExpire.retry-exhaustion", "src/dsr/model/dsr-routing.cc", {}, GetIDfromIP(nextHop), "link_ack_retry_exhausted");
++        stage2::EventSink::Emit("route_invalidated", GetIDfromIP(m_mainAddress), GetIDfromIP(mb.GetSrc()), GetIDfromIP(mb.GetDst()), "DsrRouting::LinkScheduleTimerExpire.retry-exhaustion", "src/dsr/model/dsr-routing.cc", {}, GetIDfromIP(nextHop), "broken_link_removed_from_cache");
+         NS_LOG_INFO("We need to send error messages now");
+ 
+         // Delete all the routes including the links
+@@ -2815,6 +2861,15 @@ DsrRouting::NetworkScheduleTimerExpire(DsrMaintainBuffEntry& mb, uint8_t protoco
+ 
+     if (m_sendRetries >= m_maxMaintRexmt)
+     {
++        stage2::EventSink::Emit("broken_link_declared", GetIDfromIP(m_mainAddress), GetIDfromIP(source), GetIDfromIP(dst), "DsrRouting::NetworkScheduleTimerExpire.retry-exhaustion", "src/dsr/model/dsr-routing.cc", {}, GetIDfromIP(nextHop), "network_ack_retry_exhausted");
++        stage2::EventSink::Emit("route_invalidated", GetIDfromIP(m_mainAddress), GetIDfromIP(source), GetIDfromIP(dst), "DsrRouting::NetworkScheduleTimerExpire.retry-exhaustion", "src/dsr/model/dsr-routing.cc", {}, GetIDfromIP(nextHop), "broken_link_removed_from_cache");
++        auto recovery = m_stage2RecoveryStarts.find(GetIDfromIP(dst));
++        if (recovery != m_stage2RecoveryStarts.end())
++        {
++            const int64_t duration = static_cast<int64_t>(Simulator::Now().GetNanoSeconds() - recovery->second);
++            stage2::EventSink::Emit("recovery_failed", GetIDfromIP(m_mainAddress), GetIDfromIP(source), GetIDfromIP(dst), "DsrRouting::NetworkScheduleTimerExpire.retry-exhaustion", "src/dsr/model/dsr-routing.cc", {}, GetIDfromIP(nextHop), "network_ack_retries_exhausted", p->GetUid(), -1, duration);
++            m_stage2RecoveryStarts.erase(recovery);
++        }
+         // Delete all the routes including the links
+         m_routeCache->DeleteAllRoutesIncludeLink(m_mainAddress, nextHop, m_mainAddress);
+         /*
+@@ -2920,6 +2975,8 @@ void
+ DsrRouting::SendInitialRequest(Ipv4Address source, Ipv4Address destination, uint8_t protocol)
+ {
+     NS_LOG_FUNCTION(this << source << destination << (uint32_t)protocol);
++    stage2::EventSink::Emit("route_discovery_initiated", GetIDfromIP(m_mainAddress), GetIDfromIP(source), GetIDfromIP(destination), "DsrRouting::SendInitialRequest", "src/dsr/model/dsr-routing.cc");
++    stage2::EventSink::Emit("rreq_created", GetIDfromIP(m_mainAddress), GetIDfromIP(source), GetIDfromIP(destination), "DsrRouting::SendInitialRequest", "src/dsr/model/dsr-routing.cc");
+     NS_ASSERT_MSG(!m_downTarget.IsNull(), "Error, DsrRouting cannot send downward");
+     Ptr<Packet> packet = Create<Packet>();
+     // Create an empty Ipv4 route ptr
+@@ -2971,6 +3028,10 @@ DsrRouting::SendErrorRequest(DsrOptionRerrUnreachHeader& rerr, uint8_t protocol)
+     NS_ASSERT_MSG(!m_downTarget.IsNull(), "Error, DsrRouting cannot send downward");
+     uint8_t salvage = rerr.GetSalvage();
+     Ipv4Address dst = rerr.GetOriginalDst();
++    const uint16_t recoveryDestinationId = GetIDfromIP(dst);
++    const uint64_t recoveryStartNs = Simulator::Now().GetNanoSeconds();
++    m_stage2RecoveryStarts[recoveryDestinationId] = recoveryStartNs;
++    stage2::EventSink::Emit("recovery_attempt", GetIDfromIP(m_mainAddress), GetIDfromIP(m_mainAddress), recoveryDestinationId, "DsrRouting::SendErrorRequest", "src/dsr/model/dsr-routing.cc", {}, -1, "DSR_route_error_repair");
+     NS_LOG_DEBUG("our own address here " << m_mainAddress << " error source " << rerr.GetErrorSrc()
+                                          << " error destination " << rerr.GetErrorDst()
+                                          << " error next hop " << rerr.GetUnreachNode()
+@@ -2983,6 +3044,11 @@ DsrRouting::SendErrorRequest(DsrOptionRerrUnreachHeader& rerr, uint8_t protocol)
+          */
+         DsrOptionSRHeader sourceRoute;
+         std::vector<Ipv4Address> ip = toDst.GetVector();
++        if (m_stage2RecoveryStarts.find(recoveryDestinationId) != m_stage2RecoveryStarts.end())
++        {
++            std::vector<uint32_t> nodeIds; for (auto address : ip) { nodeIds.push_back(GetIDfromIP(address)); }
++            stage2::EventSink::Emit("backup_route_selected", GetIDfromIP(m_mainAddress), GetIDfromIP(m_mainAddress), recoveryDestinationId, "DsrRouting::SendErrorRequest.route-cache-hit", "src/dsr/model/dsr-routing.cc", nodeIds);
++        }
+         sourceRoute.SetNodesAddress(ip);
+         /// When found a route and use it, UseExtends to the link cache
+         if (m_routeCache->IsLinkCache())
+@@ -3260,6 +3326,14 @@ DsrRouting::RouteRequestTimerExpire(Ptr<Packet> packet,
+         NS_LOG_LOGIC("Route discovery to " << dst << " has been attempted " << m_rreqRetries
+                                            << " times");
+         CancelRreqTimer(dst, true);
++        stage2::EventSink::Emit("route_discovery_failed", GetIDfromIP(m_mainAddress), GetIDfromIP(source), GetIDfromIP(dst), "DsrRouting::RouteRequestTimerExpire.max-retries", "src/dsr/model/dsr-routing.cc", {}, -1, "maximum_route_request_retries");
++        auto recovery = m_stage2RecoveryStarts.find(GetIDfromIP(dst));
++        if (recovery != m_stage2RecoveryStarts.end())
++        {
++            const int64_t duration = static_cast<int64_t>(Simulator::Now().GetNanoSeconds() - recovery->second);
++            stage2::EventSink::Emit("recovery_failed", GetIDfromIP(m_mainAddress), GetIDfromIP(source), GetIDfromIP(dst), "DsrRouting::RouteRequestTimerExpire.max-retries", "src/dsr/model/dsr-routing.cc", {}, -1, "route_request_retries_exhausted", packet->GetUid(), -1, duration);
++            m_stage2RecoveryStarts.erase(recovery);
++        }
+         NS_LOG_DEBUG("Route not found. Drop packet with dst " << dst);
+         m_sendBuffer.DropPacketWithDst(dst);
+     }
+diff --git a/src/dsr/model/dsr-routing.h b/src/dsr/model/dsr-routing.h
+index 9901b66..988a91f 100644
+--- a/src/dsr/model/dsr-routing.h
++++ b/src/dsr/model/dsr-routing.h
+@@ -795,6 +795,7 @@ class DsrRouting : public IpL4Protocol
+     Ptr<Node> m_node; ///< The node ptr
+ 
+     Ipv4Address m_mainAddress; ///< Our own Ip address
++    std::map<uint16_t, uint64_t> m_stage2RecoveryStarts; ///< direct recovery attempt start times
+ 
+     uint8_t segsLeft; ///< The segment left value from SR header
+ 

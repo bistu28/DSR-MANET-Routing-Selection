@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-19",
+  "project_root": "/Users/bistupaul/Movies/DISSERTATION",
+  "repository": {
+    "name": "bistu28/DSR-MANET-Routing-Selection",
+    "remote_url": "git@github.com:bistu28/DSR-MANET-Routing-Selection.git",
+    "branch": "main",
+    "local_commit": "6232193cac952abaf306ba27442845e1eb3451c5",
+    "remote_main_commit": "6232193cac952abaf306ba27442845e1eb3451c5",
+    "branch_count": 1,
+    "commit_count_observed": 2,
+    "tracked_paths_present": 249,
+    "tracked_paths_missing": 0,
+    "lfs_objects_verified": true,
+    "write_authentication": "BLOCKED",
+    "write_authentication_evidence": "Prior SSH public-key authentication failed; GitHub CLI is not installed.",
+    "push_performed": false
+  },
+  "worktree": {
+    "modified_tracked_paths": [".DS_Store"],
+    "untracked_paths": [
+      "COLAB_ENVIRONMENT_MANIFEST.json",
+      "INFRASTRUCTURE_AUDIT/",
+      "STAGE2_MASTER_EXECUTION_PLAN.md",
+      "STAGE2_INITIAL_AUDIT_REPORT.md",
+      "STAGE2_PROGRESS_LOG.md",
+      "STAGE2_TODO.md",
+      "PROJECT_SYNC_STATUS.json",
+      "colab/",
+      "ns3/dsr_instrumentation/",
+      "tests/"
+    ],
+    "staged_paths": []
+  },
+  "google_drive": {
+    "local_mirror_available": true,
+    "inspected_project_path": "My Drive/DISSERTATION",
+    "requested_project_path": "My Drive/DISSERTATION (user-provided folder link)",
+    "requested_project_path_present": true,
+    "instrumentation_package_present": false,
+    "api_or_web_authentication": "AUTHENTICATED_BROWSER_UI",
+    "setup_source_upload_authorized": true,
+    "uploads_performed": false,
+    "deletions_performed": false
+  },
+  "colab": {
+    "runtime_integration_available": false,
+    "authenticated_runtime_verified": false,
+    "notebooks_present": [
+      "ml/dataset_generation_colab.ipynb",
+      "colab/00_environment_setup.ipynb",
+      "colab/01_environment_verification.ipynb"
+    ],
+    "environment_bootstrap_implemented": true,
+    "source_bundle_sha256": "6c5f028c0d3d4a21765a336a35bdce4d3a558ea8a97403e5790d58bf2fe43bed",
+    "environment_verification_status": "UNVERIFIED; latest attached output is empty and no manifest is visible in the local Drive mirror",
+    "focused_environment_tests_passed": 11
+  },
+  "research_data": {
+    "simulation_matrix_rows": 180,
+    "unique_scenario_ids": 180,
+    "named_stage1_aggregates_present": false,
+    "named_stage1_manifests_present": false,
+    "stage1_claim_status": "NOT VERIFIED",
+    "stage2_pilot_event_jsonl_found": false,
+    "stage2_pilot_pcap_found": false,
+    "full_stage2_matrix_started": false,
+    "full_stage2_matrix_approval_required": true
+  },
+  "external_ns3": {
+    "path": "/Users/bistupaul/ns-3.48",
+    "version": "ns-3.48",
+    "commit": "d2add90",
+    "modified_dsr_source_files": 5,
+    "untracked_event_sink_header": true,
+    "untracked_results_tree": true,
+    "copied_or_modified_by_this_audit": false
+  },
+  "last_sync": {
+    "github": "No commit or push performed during this work.",
+    "google_drive": "No upload, move, or deletion performed.",
+    "evidence_report": "STAGE2_INITIAL_AUDIT_REPORT.md"
+  }
+}
