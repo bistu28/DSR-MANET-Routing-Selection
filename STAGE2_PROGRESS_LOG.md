@@ -68,3 +68,19 @@
 - The VS Code Accounts menu shows `bistu28 (GitHub)`, but that VS Code sign-in is not providing Git CLI credentials. No remote update occurred; the local branch is ahead by one commit.
 - Excluded the modified `.DS_Store`, generated Python bytecode, and detailed local/Drive inventory CSVs from the commit. The five inventory CSVs remain untracked because they enumerate local and Drive file paths.
 - No Drive upload was performed. The Colab run, NS-3.48 build, instrumentation regression, controlled pilot, and event/PCAP validation remain unverified or not run as recorded above.
+
+## 2026-11-19 — Local execution and pilot validation
+
+- Freshly verified current checkout on `main` at `a59e61792e99ac73e7e589774e73d252d8ece520`, matching `origin/main`. The historical `.DS_Store` modification and five untracked inventory CSVs remain untouched.
+- Confirmed the source matrix has 180 unique scenario IDs, 30 each at 100/150/200/300/400/500 nodes, 600 simulated seconds, and 85.09–176.8 packets/s. The dated Stage 1 aggregates/manifests and previously recovered pilot packages remain absent; older `ns3/results/` and external NS-3 outputs lack the required instrumented JSONL/PCAP evidence.
+- Created an isolated Python 3.13.5 environment outside the repository at `/Users/bistupaul/.venvs/dsr-manet-stage2-py313`; installed `requirements.txt`, recorded the exact environment in `requirements-local.lock.txt`, and passed `pip check`.
+- Added `ns3/run_local_matrix.py`: bounded scenario selection, full-matrix approval guard, per-attempt checkpoints/logs, restart-safe manifests, failure/retry handling, output checks, event and application packet ID/time validation, PCAP record framing/index joins, SHA-256, elapsed time, output size, and sampled process-tree RSS. Default output is outside Git.
+- Fixed EventSink JSONL open/flush/close error handling. Added a packet-level application trace keyed by ns-3 packet UID so received packets join to Tx timestamps and application delay is measurable despite FlowMonitor reporting zero classifiable DSR flows. Refreshed instrumentation and setup-bundle hashes.
+- `./ns3 build -j 4` passed; `./test.py -s routing-dsr -n -v` passed (1/1). Python suite passed (23/23); Pylance reported no diagnostics for the runner/tests.
+- Ran and revalidated an isolated baseline for `DSR_N100_MLOW_TLOW_S10001_R001`: 51,193 events, 102/102 exact PCAP/event joins, 50,883 Tx / 50,882 Rx, 1 packet lost, 2.199166 ms mean application delay.
+- Ran and revalidated the same row with a separately logged 300–310 s range-to-zero intervention, restored to 250 m: 53,793 events, 901/901 exact PCAP/event joins, 50,883 Tx / 49,571 Rx, 1,312 lost, 2.628178 ms mean application delay. DSR directly declared a broken link at 300.200624 s and emitted `recovery_succeeded` at 315.728682 s (15.528058 s recovery).
+- Validated outputs are under `/Users/bistupaul/Movies/MANET_STAGE2_LOCAL_VALIDATION_20261119_delay/`, outside Git. Earlier test outputs are also preserved; none of the historical research directories were overwritten or deleted.
+- Preliminary resource estimate: about 11.5–12.5 h under a linear 180-row scaling model, planning allowance 12–25 h; about 13 GB modeled output and about 26 GB with 2x allowance. Current free disk is 28 GiB, so headroom is too narrow for retries. A 500-node peak-memory/runtime sample remains unmeasured; recommend at least 40 GiB free before full execution.
+- Full matrix remains **HELD**. Stage 1 recovery, original pilot provenance, cache-removal/route-expiry/RERR-reception edge coverage, logging-overhead measurement, sufficient disk headroom, and explicit user approval remain outstanding. No dataset generation, final model training, commit, or remote push was performed during this local validation.
+
+See `STAGE2_LOCAL_VALIDATION_REPORT.md` for measured pilot details, assumptions, and the complete resource estimate.

@@ -23,6 +23,7 @@
 #include <sstream>
 #include <string>
 #include <thread>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -42,6 +43,10 @@ uint64_t gApplicationTxPackets = 0;
 uint64_t gApplicationTxBytes = 0;
 uint64_t gApplicationRxPackets = 0;
 uint64_t gApplicationRxBytes = 0;
+uint64_t gApplicationDelayNsSum = 0;
+uint64_t gApplicationDelayPackets = 0;
+std::unordered_map<uint64_t, uint64_t> gApplicationTxTimesNs;
+std::ofstream gApplicationPacketTrace;
 Ptr<PcapFileWrapper> gDsrControlPcap;
 Ptr<RangePropagationLossModel> gRangeModel;
 std::ofstream gDsrPcapIndex;
@@ -84,12 +89,40 @@ void RecordApplicationTx(Ptr<const Packet> packet)
 {
     ++gApplicationTxPackets;
     gApplicationTxBytes += packet->GetSize();
+    const uint64_t packetUid = packet->GetUid();
+    const uint64_t now = Simulator::Now().GetNanoSeconds();
+    const auto inserted = gApplicationTxTimesNs.emplace(packetUid, now);
+    NS_ABORT_MSG_IF(!inserted.second, "Duplicate application packet UID at transmit: " << packetUid);
+    if (gApplicationPacketTrace.is_open())
+    {
+        gApplicationPacketTrace << "ns3uid:" << packetUid << ",tx," << now << "," << gSourceNode << ","
+                                << packet->GetSize() << ",\n";
+    }
 }
 
 void RecordApplicationRx(Ptr<const Packet> packet, const Address&, const Address&)
 {
     ++gApplicationRxPackets;
     gApplicationRxBytes += packet->GetSize();
+    const uint64_t packetUid = packet->GetUid();
+    const uint64_t now = Simulator::Now().GetNanoSeconds();
+    int64_t delayNs = -1;
+    auto transmit = gApplicationTxTimesNs.find(packetUid);
+    if (transmit != gApplicationTxTimesNs.end())
+    {
+        NS_ABORT_MSG_IF(now < transmit->second, "Application receive timestamp precedes transmit");
+        delayNs = static_cast<int64_t>(now - transmit->second);
+        gApplicationDelayNsSum += static_cast<uint64_t>(delayNs);
+        ++gApplicationDelayPackets;
+        gApplicationTxTimesNs.erase(transmit);
+    }
+    if (gApplicationPacketTrace.is_open())
+    {
+        gApplicationPacketTrace << "ns3uid:" << packetUid << ",rx," << now << "," << gDestinationNode << ","
+                                << packet->GetSize() << ",";
+        if (delayNs >= 0) { gApplicationPacketTrace << delayNs; }
+        gApplicationPacketTrace << "\n";
+    }
 }
 
 void ApplyRangeIntervention(double rangeMeters)
@@ -258,6 +291,7 @@ int main(int argc, char* argv[])
     std::string liveTraceFile;
     std::string dsrEventFile;
     std::string dsrPcapFile;
+    std::string applicationTraceFile;
     std::string failureControlFile;
     double failureOutageStartS = 0.0;
     double failureOutageDurationS = 0.0;
@@ -294,6 +328,7 @@ int main(int argc, char* argv[])
     cmd.AddValue("liveTraceFile", "Optional JSONL stream of real simulation snapshots", liveTraceFile);
     cmd.AddValue("dsrEventFile", "Optional raw JSONL stream of instrumented DSR events", dsrEventFile);
     cmd.AddValue("dsrPcapFile", "Optional DLT_RAW pcap containing IPv4 DSR control packets", dsrPcapFile);
+    cmd.AddValue("applicationTraceFile", "Optional per-packet application Tx/Rx timestamp CSV", applicationTraceFile);
     cmd.AddValue("failureControlFile", "Optional JSONL log for explicit propagation range interventions", failureControlFile);
     cmd.AddValue("failureOutageStartS", "Start time for a separate controlled range-outage experiment; zero disables", failureOutageStartS);
     cmd.AddValue("failureOutageDurationS", "Duration of the separate controlled range outage", failureOutageDurationS);
@@ -341,6 +376,15 @@ int main(int argc, char* argv[])
     EnsureDirectory(logDir);
     EnsureDirectory(plotDir);
     EnsureDirectory(reportDir);
+    if (!applicationTraceFile.empty())
+    {
+        const auto parent = std::filesystem::path(applicationTraceFile).parent_path();
+        if (!parent.empty()) { EnsureDirectory(parent.string()); }
+        gApplicationPacketTrace.open(applicationTraceFile, std::ios::out | std::ios::trunc);
+        NS_ABORT_MSG_IF(!gApplicationPacketTrace.is_open(),
+                        "Could not open application packet trace: " << applicationTraceFile);
+        gApplicationPacketTrace << "packet_id,direction,simulation_time_ns,node_id,packet_bytes,delay_ns\n";
+    }
     if (!dsrPcapFile.empty())
     {
         EnsureDirectory(std::filesystem::path(dsrPcapFile).parent_path().string());
@@ -563,6 +607,13 @@ int main(int argc, char* argv[])
 
     Simulator::Stop(Seconds(simulationTime + 1.0));
     Simulator::Run();
+    if (gApplicationPacketTrace.is_open())
+    {
+        gApplicationPacketTrace.flush();
+        NS_ABORT_MSG_IF(!gApplicationPacketTrace.good(), "Could not flush application packet trace");
+        gApplicationPacketTrace.close();
+        NS_ABORT_MSG_IF(gApplicationPacketTrace.fail(), "Could not close application packet trace");
+    }
     if (gLiveTrace.is_open())
     {
         {
@@ -578,7 +629,7 @@ int main(int argc, char* argv[])
     auto stats = flowMonitor->GetFlowStats();
 
     std::ofstream metricsCsv(metricsFile);
-    metricsCsv << "run_id,random_seed,random_run,timestamp_s,node_count,source,destination,tx_packets,rx_packets,tx_bytes,rx_bytes,packet_loss,pdr,throughput_bps,delay_ms,packet_size,traffic_rate,area_size,node_speed,mobility_model,routing_protocol,measurement_layer\n";
+    metricsCsv << "run_id,random_seed,random_run,timestamp_s,node_count,source,destination,tx_packets,rx_packets,tx_bytes,rx_bytes,packet_loss,pdr,throughput_bps,delay_ms,delay_sample_count,packet_size,traffic_rate,area_size,node_speed,mobility_model,routing_protocol,measurement_layer\n";
 
     double flowDurationSeconds = std::max(1.0, simulationTime - 2.0);
     for (const auto& entry : stats)
@@ -596,7 +647,7 @@ int main(int argc, char* argv[])
         double delayMs = flow.rxPackets > 0 ? (flow.delaySum.GetSeconds() / static_cast<double>(flow.rxPackets)) * 1000.0 : 0.0;
 
         metricsCsv << runId << "," << randomSeed << "," << randomRun << "," << simulationTime << "," << nodeCount << "," << tuple.sourceAddress << "," << tuple.destinationAddress << ","
-                   << txPackets << "," << rxPackets << "," << txBytes << "," << rxBytes << "," << std::fixed << std::setprecision(6) << packetLoss << "," << pdr << "," << throughputBps << "," << delayMs << ","
+                   << txPackets << "," << rxPackets << "," << txBytes << "," << rxBytes << "," << std::fixed << std::setprecision(6) << packetLoss << "," << pdr << "," << throughputBps << "," << delayMs << "," << flow.rxPackets << ","
                    << packetSize << "," << trafficRate << "," << areaSize << "," << nodeSpeed << "," << mobilityModel << "," << routingProtocol << ",ipv4_flow_monitor\n";
 
         if (flow.txPackets > 0 || flow.rxPackets > 0)
@@ -617,12 +668,17 @@ int main(int argc, char* argv[])
                          ? static_cast<double>(gApplicationRxPackets) / gApplicationTxPackets
                          : 0.0;
         double throughputBps = (static_cast<double>(gApplicationRxBytes) * 8.0) / flowDurationSeconds;
+        const double delayMs = gApplicationDelayPackets > 0
+                                   ? static_cast<double>(gApplicationDelayNsSum) /
+                                         static_cast<double>(gApplicationDelayPackets) / 1e6
+                                   : 0.0;
 
         metricsCsv << runId << "," << randomSeed << "," << randomRun << "," << simulationTime << "," << nodeCount << ","
                    << interfaces.GetAddress(source) << "," << interfaces.GetAddress(destination) << ","
                    << gApplicationTxPackets << "," << gApplicationRxPackets << "," << gApplicationTxBytes << ","
                    << gApplicationRxBytes << "," << packetLoss << "," << std::fixed << std::setprecision(6)
-                   << pdr << "," << throughputBps << ",," << packetSize << "," << trafficRate << "," << areaSize << ","
+                   << pdr << "," << throughputBps << "," << delayMs << "," << gApplicationDelayPackets << ","
+                   << packetSize << "," << trafficRate << "," << areaSize << ","
                    << nodeSpeed << "," << mobilityModel << "," << routingProtocol << ",application_trace\n";
     }
     metricsCsv.close();
@@ -661,6 +717,14 @@ int main(int argc, char* argv[])
     logStream << "application_rx_packets=" << gApplicationRxPackets << "\n";
     logStream << "application_tx_bytes=" << gApplicationTxBytes << "\n";
     logStream << "application_rx_bytes=" << gApplicationRxBytes << "\n";
+    logStream << "application_trace_file=" << applicationTraceFile << "\n";
+    logStream << "application_delay_samples=" << gApplicationDelayPackets << "\n";
+    logStream << "application_mean_delay_ms="
+              << (gApplicationDelayPackets > 0
+                      ? static_cast<double>(gApplicationDelayNsSum) /
+                            static_cast<double>(gApplicationDelayPackets) / 1e6
+                      : 0.0)
+              << "\n";
     logStream << "status=baseline_dsr_run_complete\n";
     logStream.close();
 

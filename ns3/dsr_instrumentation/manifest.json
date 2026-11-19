@@ -32,11 +32,11 @@
     },
     {
       "path": "src/dsr/model/stage2-dsr-event-sink.h",
-      "sha256": "e170edca0328abf961f39cd4141fb9f4131f4a831d6103b7887fda069437d612"
+      "sha256": "03e537ff857878604539445727690a9fa39faad690e878b6e2cd2606013377d5"
     },
     {
       "path": "scratch/dsr_manet_dataset.cc",
-      "sha256": "c1371a8893141732c641d1697a8c4093143fae0a6fd6378d84d9a0658fbfa849"
+      "sha256": "f356bbf3be16122208a9c39ab79570a1c09e3bfe57f551b24c679475fd70623a"
     }
   ],
   "observed_changes": [
@@ -47,9 +47,8 @@
     "The patch adds a DsrRouting::Start() early return when m_priorityQueue is already populated; this is a lifecycle behavior change and requires focused regression coverage."
   ],
   "known_review_items": [
-    "EventSink::Configure does not currently fail explicitly if the JSONL output cannot be opened.",
-    "Manual JSON escaping and event/PCAP identifier alignment require parser-level tests.",
-    "Logging overhead and event-hook coverage have not been measured.",
+    "Manual JSON escaping still requires testing of arbitrary control characters in future dynamic string fields.",
+    "Logging overhead and event-hook coverage have not been measured across the scenario matrix.",
     "The external results tree was intentionally excluded and is not validated pilot evidence."
   ],
   "external_results_copied": false,

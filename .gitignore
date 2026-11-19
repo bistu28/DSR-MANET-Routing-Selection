@@ -1,0 +1,8 @@
+# Local Python caches and environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Large, reproducible simulation artifacts are kept outside Git.
+/ns3/results/

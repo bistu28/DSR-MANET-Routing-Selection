@@ -5,6 +5,7 @@
 #include "ns3/ipv4.h"
 #include "ns3/node-list.h"
 #include "ns3/node.h"
+#include "ns3/abort.h"
 
 #include <cstdint>
 #include <fstream>
@@ -24,6 +25,7 @@ struct EventSink
     {
         auto& s = State();
         s.file.open(path, std::ios::out | std::ios::trunc);
+        NS_ABORT_MSG_IF(!s.file.is_open(), "Could not open DSR event JSONL file: " << path);
         s.scenario = scenario;
         s.run = run;
         s.seed = seed;
@@ -34,7 +36,13 @@ struct EventSink
     static void Close()
     {
         auto& s = State();
-        if (s.file.is_open()) { s.file.flush(); s.file.close(); }
+        if (s.file.is_open())
+        {
+            s.file.flush();
+            NS_ABORT_MSG_IF(!s.file.good(), "Could not flush DSR event JSONL file");
+            s.file.close();
+            NS_ABORT_MSG_IF(s.file.fail(), "Could not close DSR event JSONL file");
+        }
     }
 
     static void Emit(const std::string& type,
