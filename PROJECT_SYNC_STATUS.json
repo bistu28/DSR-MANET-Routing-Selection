@@ -6,30 +6,25 @@
     "name": "bistu28/DSR-MANET-Routing-Selection",
     "remote_url": "git@github.com:bistu28/DSR-MANET-Routing-Selection.git",
     "branch": "main",
-    "local_commit": "6232193cac952abaf306ba27442845e1eb3451c5",
+    "local_commit": "0e541071440fb11f99ed2749399ed3a933708b41",
     "remote_main_commit": "6232193cac952abaf306ba27442845e1eb3451c5",
     "branch_count": 1,
     "commit_count_observed": 2,
-    "tracked_paths_present": 249,
+    "tracked_paths_present": 272,
     "tracked_paths_missing": 0,
     "lfs_objects_verified": true,
     "write_authentication": "BLOCKED",
-    "write_authentication_evidence": "Prior SSH public-key authentication failed; GitHub CLI is not installed.",
+    "write_authentication_evidence": "VS Code Accounts lists bistu28 (GitHub), but Git CLI authentication is unavailable: SSH push failed with Permission denied (publickey), and HTTPS push failed because no password/token credential was available. GitHub CLI is not installed.",
     "push_performed": false
   },
   "worktree": {
     "modified_tracked_paths": [".DS_Store"],
     "untracked_paths": [
-      "COLAB_ENVIRONMENT_MANIFEST.json",
-      "INFRASTRUCTURE_AUDIT/",
-      "STAGE2_MASTER_EXECUTION_PLAN.md",
-      "STAGE2_INITIAL_AUDIT_REPORT.md",
-      "STAGE2_PROGRESS_LOG.md",
-      "STAGE2_TODO.md",
-      "PROJECT_SYNC_STATUS.json",
-      "colab/",
-      "ns3/dsr_instrumentation/",
-      "tests/"
+      "INFRASTRUCTURE_AUDIT/DUPLICATES.csv",
+      "INFRASTRUCTURE_AUDIT/FILE_RECONCILIATION.csv",
+      "INFRASTRUCTURE_AUDIT/GITHUB_INVENTORY.csv",
+      "INFRASTRUCTURE_AUDIT/GOOGLE_DRIVE_INVENTORY.csv",
+      "INFRASTRUCTURE_AUDIT/LOCAL_INVENTORY.csv"
     ],
     "staged_paths": []
   },
@@ -78,7 +73,7 @@
     "copied_or_modified_by_this_audit": false
   },
   "last_sync": {
-    "github": "No commit or push performed during this work.",
+    "github": "Local commit 0e541071440fb11f99ed2749399ed3a933708b41 created; push attempts via SSH and HTTPS were blocked by missing Git CLI credentials. origin/main remains at 6232193cac952abaf306ba27442845e1eb3451c5.",
     "google_drive": "No upload, move, or deletion performed.",
     "evidence_report": "STAGE2_INITIAL_AUDIT_REPORT.md"
   }

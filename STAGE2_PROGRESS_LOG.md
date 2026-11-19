@@ -60,3 +60,11 @@
 - Chrome inventory showed the ChatGPT page and the linked `ns3 - Google Drive` tab, with no Colab tab. The focus-safety guard rejected switching to Drive, so the live manifest and Colab outputs could not be inspected.
 - Independently rechecked the local setup bundle and instrumentation payload hashes: bundle `6c5f028c...fe43bed`, patch `931131e8...30922`, event sink `e170edca...7d612`, driver `c1371a88...fa849`. All 11 focused local environment tests pass. These establish local package integrity only—not successful installation or build in Colab.
 - Updated the environment manifest and tracker to `UNVERIFIED`/`BLOCKED` for the latest user-reported run. No NS-3 compilation, instrumentation regression, baseline simulation, event/PCAP validation, GitHub push, or Drive write was performed because their acceptance evidence is unavailable. The 180-run matrix remains unstarted.
+
+## 2026-11-19 — GitHub push attempt
+
+- The user requested that the Stage 2 project resources be pushed to GitHub. Reviewed the staged set and committed 23 source, notebook, test, manifest, and documentation files locally as `0e541071440fb11f99ed2749399ed3a933708b41` (`Add Stage 2 bootstrap and instrumentation resources`).
+- Verified `origin/main` before the commit at `6232193cac952abaf306ba27442845e1eb3451c5`. `git push origin main` failed with `Permission denied (publickey)`. A one-shot HTTPS push using the configured credential helper, with terminal prompting disabled, failed because no password/token credential was available.
+- The VS Code Accounts menu shows `bistu28 (GitHub)`, but that VS Code sign-in is not providing Git CLI credentials. No remote update occurred; the local branch is ahead by one commit.
+- Excluded the modified `.DS_Store`, generated Python bytecode, and detailed local/Drive inventory CSVs from the commit. The five inventory CSVs remain untracked because they enumerate local and Drive file paths.
+- No Drive upload was performed. The Colab run, NS-3.48 build, instrumentation regression, controlled pilot, and event/PCAP validation remain unverified or not run as recorded above.
